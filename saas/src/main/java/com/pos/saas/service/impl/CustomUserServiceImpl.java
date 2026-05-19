@@ -1,7 +1,7 @@
-package com.josh.service.impl;
+package com.pos.saas.service.impl;
 
-import com.josh.model.User;
-import com.josh.repository.UserRepository;
+import com.pos.saas.model.User;
+import com.pos.saas.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

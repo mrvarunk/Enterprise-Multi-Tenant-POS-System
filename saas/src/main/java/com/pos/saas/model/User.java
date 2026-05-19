@@ -1,9 +1,13 @@
 package com.pos.saas.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.pos.saas.domain.UserRole;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
@@ -30,6 +34,9 @@ public class User {
     private String phone;
 
     private UserRole role;
+    @ManyToOne
+    @JsonIgnore // Prevents infinite recursion when fetching users
+    private Store store;
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;

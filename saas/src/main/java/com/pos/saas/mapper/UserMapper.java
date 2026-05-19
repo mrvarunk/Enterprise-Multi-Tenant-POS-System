@@ -1,11 +1,11 @@
 package com.pos.saas.mapper;
 
 import com.pos.saas.model.User;
-import com.pos.saas.payload.dto.UserDto;
+import com.pos.saas.dto.UserDTO;
 
 public class UserMapper {
-    public static UserDto toDto(User user) {
-        UserDto userDto = new UserDto();
+    public static UserDTO toDTO(User user) {
+        UserDTO userDto = new UserDTO();
         userDto.setId(user.getId());
         userDto.setFullName(user.getFullName());
         userDto.setEmail(user.getEmail());

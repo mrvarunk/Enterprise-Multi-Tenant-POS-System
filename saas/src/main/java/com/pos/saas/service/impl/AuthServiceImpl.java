@@ -5,7 +5,7 @@ import com.pos.saas.domain.UserRole;
 import com.pos.saas.exception.UserException;
 import com.pos.saas.mapper.UserMapper;
 import com.pos.saas.model.User;
-import com.pos.saas.payload.dto.UserDto;
+import com.pos.saas.dto.UserDTO;
 import com.pos.saas.payload.response.AuthResponse;
 import com.pos.saas.repository.UserRepository;
 import com.pos.saas.service.AuthService;
@@ -26,10 +26,10 @@ public class AuthServiceImpl implements AuthService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtProvider jwtProvider;
-    private final com.josh.service.impl.CustomUserServiceImpl customUserService;
+    private final com.pos.saas.service.impl.CustomUserServiceImpl customUserService;
 
     @Override
-    public AuthResponse signup(UserDto userDto) throws UserException {
+    public AuthResponse signup(UserDTO userDto) throws UserException {
         User existingUser = userRepository.findByEmail(userDto.getEmail());
         if (existingUser != null) {
             throw new UserException("Email ID already registered.");
@@ -58,13 +58,13 @@ public class AuthServiceImpl implements AuthService {
         AuthResponse response = new AuthResponse();
         response.setJwt(jwt);
         response.setMessage("Registered successfully");
-        response.setUser(UserMapper.toDto(savedUser));
+        response.setUser(UserMapper.toDTO(savedUser));
 
         return response;
     }
 
     @Override
-    public AuthResponse login(UserDto userDto) throws UserException {
+    public AuthResponse login(UserDTO userDto) throws UserException {
         Authentication authentication = authenticate(userDto.getEmail(), userDto.getPassword());
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
@@ -77,7 +77,7 @@ public class AuthServiceImpl implements AuthService {
         AuthResponse response = new AuthResponse();
         response.setJwt(jwt);
         response.setMessage("Login successfully");
-        response.setUser(UserMapper.toDto(user));
+        response.setUser(UserMapper.toDTO(user));
 
         return response;
     }

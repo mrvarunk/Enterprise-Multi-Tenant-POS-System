@@ -1,7 +1,7 @@
 package com.pos.saas.controller;
 
+import com.pos.saas.dto.UserDTO;
 import com.pos.saas.exception.UserException;
-import com.pos.saas.payload.dto.UserDto;
 import com.pos.saas.payload.response.AuthResponse;
 import com.pos.saas.service.AuthService;
 import lombok.RequiredArgsConstructor;
@@ -20,14 +20,14 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/signup")
-    public ResponseEntity<AuthResponse> signupHandler(@RequestBody UserDto userDto) throws UserException {
-        AuthResponse response = authService.signup(userDto);
-        return new ResponseEntity<>(response, HttpStatus.OK);
+    public ResponseEntity<AuthResponse> signupHandler(@RequestBody UserDTO userDTO) throws UserException {
+        AuthResponse authResponse = authService.signup(userDTO);
+        return new ResponseEntity<>(authResponse, HttpStatus.OK);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<AuthResponse> loginHandler(@RequestBody UserDto userDto) throws UserException {
-        AuthResponse response = authService.login(userDto);
-        return new ResponseEntity<>(response, HttpStatus.OK);
+    public ResponseEntity<AuthResponse> loginHandler(@RequestBody UserDTO userDTO) throws UserException {
+        AuthResponse authResponse = authService.login(userDTO);
+        return new ResponseEntity<>(authResponse, HttpStatus.OK);
     }
 }
