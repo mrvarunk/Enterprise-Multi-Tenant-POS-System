@@ -37,7 +37,9 @@ public class User {
     @ManyToOne
     @JsonIgnore // Prevents infinite recursion when fetching users
     private Store store;
-
+    @ManyToOne
+    @JsonIgnore
+    private Branch branch;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private LocalDateTime lastLogin;
