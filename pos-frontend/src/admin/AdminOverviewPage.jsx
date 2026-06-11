@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { DollarSign, ShoppingBag, Users, AlertTriangle, TrendingUp, ArrowRight } from 'lucide-react';
-import { getOrdersByBranch } from '../../redux/features/order/orderThunk';
-import { fetchProductsByStore } from '../../redux/features/product/productThunk';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../../components/ui/table';
+import { getOrdersByBranch } from "../redux/features/order/orderThunk";
+import { fetchProductsByStore } from "../redux/features/product/productThunk";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../components/ui/table";
 
 export default function AdminOverviewPage() {
     const dispatch = useDispatch();

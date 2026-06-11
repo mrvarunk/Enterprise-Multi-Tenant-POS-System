@@ -1,6 +1,6 @@
 import React from 'react';
 import { Menu, LogOut, Receipt } from 'lucide-react';
-import { useSidebar } from '../hooks/useSidebar';
+import { useSidebar } from '../context/SidebarContext.jsx';
 import { Button } from '../components/ui/button.jsx';
 
 export default function POSHeader() {

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
-import { useSidebar } from '../hooks/useSidebar';
+import { useSidebar } from '../context/SidebarContext.jsx';
 import Sidebar from './Sidebar';
 import POSHeader from './POSHeader';
 

@@ -1,12 +1,11 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import api, { getAuthHeaders } from '../../../utils/api';
+import api from '../../../Utils/api';
 
 export const createOrder = createAsyncThunk(
     'order/create',
     async ({ orderData, cashierId }, { rejectWithValue }) => {
         try {
-            const config = getAuthHeaders();
-            const response = await api.post(`/api/orders/cashier/${cashierId}`, orderData, config);
+            const response = await api.post(`/api/orders/cashier/${cashierId}`, orderData);
             return response.data;
         } catch (error) {
             return rejectWithValue(error.response?.data?.message || "Failed to process transaction.");
@@ -18,8 +17,7 @@ export const getOrdersByBranch = createAsyncThunk(
     'order/getByBranch',
     async (branchId, { rejectWithValue }) => {
         try {
-            const config = getAuthHeaders();
-            const response = await api.get(`/api/orders/branch/${branchId}`, config);
+            const response = await api.get(`/api/orders/branch/${branchId}`);
             return response.data;
         } catch (error) {
             return rejectWithValue(error.response?.data?.message || "Failed to fetch branch orders.");
@@ -31,8 +29,7 @@ export const getTodayOrdersByBranch = createAsyncThunk(
     'order/getTodayByBranch',
     async (branchId, { rejectWithValue }) => {
         try {
-            const config = getAuthHeaders();
-            const response = await api.get(`/api/orders/branch/${branchId}/today`, config);
+            const response = await api.get(`/api/orders/branch/${branchId}/today`);
             return response.data;
         } catch (error) {
             return rejectWithValue(error.response?.data?.message || "Failed to fetch today's orders.");
@@ -44,8 +41,7 @@ export const getRecentOrders = createAsyncThunk(
     'order/getRecent',
     async (branchId, { rejectWithValue }) => {
         try {
-            const config = getAuthHeaders();
-            const response = await api.get(`/api/orders/branch/${branchId}/recent`, config);
+            const response = await api.get(`/api/orders/branch/${branchId}/recent`);
             return response.data;
         } catch (error) {
             return rejectWithValue(error.response?.data?.message || "Failed to fetch recent orders.");

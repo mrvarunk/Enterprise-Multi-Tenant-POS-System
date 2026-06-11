@@ -1,6 +1,6 @@
 import { Routes, Route } from 'react-router-dom';
 import AdminDashboardLayout from '../admin/AdminDashboardLayout';
-import AdminOverviewPage from '../admin/dashboard/AdminOverviewPage';
+import AdminOverviewPage from '../admin/AdminOverviewPage.jsx';
 import InventoryManagement from '../admin/inventory/InventoryManagement';
 import EmployeeManagement from '../admin/employees/EmployeeManagement';
 

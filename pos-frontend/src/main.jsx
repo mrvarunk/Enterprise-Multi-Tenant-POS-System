@@ -4,15 +4,17 @@ import App from './App.jsx'
 import './index.css'
 import { BrowserRouter } from 'react-router-dom'
 import { SidebarProvider } from './context/SidebarContext';
-// import { Provider } from 'react-redux'
-// import globalState from './redux/globalState'
+import { Provider } from 'react-redux'
+import store from './redux/globalState' // Restored global state tracking configuration
 
 ReactDOM.createRoot(document.getElementById('root')).render(
     <React.StrictMode>
-        <SidebarProvider>
-            <BrowserRouter>
-                <App />
-            </BrowserRouter>
-        </SidebarProvider>
+        <Provider store={store}>
+            <SidebarProvider>
+                <BrowserRouter>
+                    <App />
+                </BrowserRouter>
+            </SidebarProvider>
+        </Provider>
     </React.StrictMode>
 )
