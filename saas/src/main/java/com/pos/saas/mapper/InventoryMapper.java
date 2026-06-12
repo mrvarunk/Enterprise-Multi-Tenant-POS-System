@@ -3,7 +3,7 @@ package com.pos.saas.mapper;
 import com.pos.saas.model.Branch;
 import com.pos.saas.model.Inventory;
 import com.pos.saas.model.Product;
-import com.pos.saas.payload.dto.InventoryDTO;
+import com.pos.saas.dto.InventoryDTO;
 
 public class InventoryMapper {
 

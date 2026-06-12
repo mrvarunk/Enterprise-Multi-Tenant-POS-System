@@ -1,6 +1,6 @@
 package com.pos.saas.controller;
 
-import com.pos.saas.payload.dto.InventoryDTO;
+import com.pos.saas.dto.InventoryDTO;
 import com.pos.saas.payload.response.ApiResponse;
 import com.pos.saas.service.InventoryService;
 import lombok.RequiredArgsConstructor;

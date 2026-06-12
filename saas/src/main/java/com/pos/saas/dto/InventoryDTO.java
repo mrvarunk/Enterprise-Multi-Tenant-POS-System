@@ -1,4 +1,4 @@
-package com.pos.saas.payload.dto;
+package com.pos.saas.dto;
 
 import lombok.Builder;
 import lombok.Data;

@@ -1,6 +1,6 @@
 package com.pos.saas.service;
 
-import com.pos.saas.payload.dto.InventoryDTO;
+import com.pos.saas.dto.InventoryDTO;
 import java.util.List;
 
 public interface InventoryService {
