@@ -1,6 +1,6 @@
 package com.pos.saas.controller;
 
-import com.pos.saas.payload.dto.UserDTO;
+import com.pos.saas.dto.UserDTO;
 import com.pos.saas.payload.response.ApiResponse;
 import com.pos.saas.service.EmployeeService;
 import lombok.RequiredArgsConstructor;

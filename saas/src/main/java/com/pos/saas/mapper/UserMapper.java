@@ -16,4 +16,17 @@ public class UserMapper {
         userDto.setLastLogin(user.getLastLogin());
         return userDto;
     }
+
+    // Add this new method to fix the compilation error in EmployeeServiceImpl
+    public static User toEntity(UserDTO userDto) {
+        if (userDto == null) return null;
+
+        User user = new User();
+        user.setId(userDto.getId());
+        user.setFullName(userDto.getFullName());
+        user.setEmail(userDto.getEmail());
+        user.setRole(userDto.getRole());
+        user.setPhone(userDto.getPhone());
+        return user;
+    }
 }

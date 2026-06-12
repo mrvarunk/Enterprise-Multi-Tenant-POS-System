@@ -1,8 +1,8 @@
 package com.pos.saas.service.impl;
 
+import com.pos.saas.config.TenantContext;
 import com.pos.saas.dto.CategoryDTO;
 import com.pos.saas.exception.ResourceNotFoundException;
-import com.pos.saas.exception.UnauthorizedException;
 import com.pos.saas.mapper.CategoryMapper;
 import com.pos.saas.model.Category;
 import com.pos.saas.model.Store;
@@ -10,6 +10,8 @@ import com.pos.saas.repository.CategoryRepository;
 import com.pos.saas.repository.StoreRepository;
 import com.pos.saas.service.CategoryService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,6 +24,7 @@ public class CategoryServiceImpl implements CategoryService {
     private final StoreRepository storeRepository;
 
     @Override
+    @CacheEvict(value = "categoriesByStore", keyGenerator = "tenantAwareKeyGenerator", beforeInvocation = false)
     public CategoryDTO createCategory(CategoryDTO categoryDTO) {
         Store store = storeRepository.findById(categoryDTO.getStoreId())
                 .orElseThrow(() -> new ResourceNotFoundException("Store not found with id: " + categoryDTO.getStoreId()));
@@ -32,6 +35,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    @Cacheable(value = "categoriesByStore", keyGenerator = "tenantAwareKeyGenerator")
     public List<CategoryDTO> getCategoriesByStore(Long storeId) {
         return categoryRepository.findByStoreId(storeId).stream()
                 .map(CategoryMapper::toDTO)
@@ -39,9 +43,15 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    @CacheEvict(value = "categoriesByStore", keyGenerator = "tenantAwareKeyGenerator")
     public CategoryDTO updateCategory(Long id, CategoryDTO categoryDTO) {
-        Category category = categoryRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Category not found with id: " + id));
+        String tenantId = TenantContext.getTenantId();
+        if (tenantId == null) {
+            throw new ResourceNotFoundException("Category not found");
+        }
+        Long storeId = Long.parseLong(tenantId);
+        Category category = categoryRepository.findByIdAndStoreId(id, storeId)
+                .orElseThrow(() -> new ResourceNotFoundException("Category not found"));
 
         category.setName(categoryDTO.getName());
         Category updatedCategory = categoryRepository.save(category);
@@ -49,17 +59,15 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    @CacheEvict(value = "categoriesByStore", keyGenerator = "tenantAwareKeyGenerator")
     public void deleteCategory(Long id) {
-        Category category = categoryRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Category not found with id: " + id));
-
-        // Contextual authorization logic check built around [04:51:19]
-        boolean isAdmin = true; // Placeholder for actual security context evaluation
-        boolean isManager = false;
-
-        if (!isAdmin && !isManager) {
-            throw new UnauthorizedException("You do not have permission to delete this category.");
+        String tenantId = TenantContext.getTenantId();
+        if (tenantId == null) {
+            throw new ResourceNotFoundException("Category not found");
         }
+        Long storeId = Long.parseLong(tenantId);
+        Category category = categoryRepository.findByIdAndStoreId(id, storeId)
+                .orElseThrow(() -> new ResourceNotFoundException("Category not found"));
 
         categoryRepository.delete(category);
     }

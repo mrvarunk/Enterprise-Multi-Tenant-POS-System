@@ -3,12 +3,16 @@ package com.pos.saas.repository;
 import com.pos.saas.model.Inventory;
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
+import java.util.Optional;
 
 public interface InventoryRepository extends JpaRepository<Inventory, Long> {
 
     List<Inventory> findByProductId(Long productId);
 
     List<Inventory> findByBranchId(Long branchId);
+
+    // IDOR Protection: Verify inventory belongs to tenant's store (via branch relationship)
+    Optional<Inventory> findByIdAndBranch_StoreId(Long id, Long storeId);
 
     Inventory findByProductIdAndBranchId(Long productId, Long branchId);
 }

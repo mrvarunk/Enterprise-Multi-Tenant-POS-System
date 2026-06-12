@@ -1,5 +1,7 @@
 package com.pos.saas.service.impl;
 
+import com.pos.saas.config.TenantContext;
+import com.pos.saas.exception.ResourceNotFoundException;
 import com.pos.saas.mapper.InventoryMapper;
 import com.pos.saas.model.Branch;
 import com.pos.saas.model.Inventory;
@@ -39,8 +41,13 @@ public class InventoryServiceImpl implements InventoryService {
 
     @Override
     public InventoryDTO updateInventory(Long id, InventoryDTO inventoryDTO) throws Exception {
-        Inventory existingInventory = inventoryRepository.findById(id)
-                .orElseThrow(() -> new Exception("Inventory not found"));
+        String tenantId = TenantContext.getTenantId();
+        if (tenantId == null) {
+            throw new ResourceNotFoundException("Inventory not found");
+        }
+        Long storeId = Long.parseLong(tenantId);
+        Inventory existingInventory = inventoryRepository.findByIdAndBranch_StoreId(id, storeId)
+                .orElseThrow(() -> new ResourceNotFoundException("Inventory not found"));
 
         existingInventory.setQuantity(inventoryDTO.getQuantity());
         Inventory updatedInventory = inventoryRepository.save(existingInventory);
@@ -50,15 +57,25 @@ public class InventoryServiceImpl implements InventoryService {
 
     @Override
     public void deleteInventory(Long id) throws Exception {
-        Inventory inventory = inventoryRepository.findById(id)
-                .orElseThrow(() -> new Exception("Inventory not found"));
+        String tenantId = TenantContext.getTenantId();
+        if (tenantId == null) {
+            throw new ResourceNotFoundException("Inventory not found");
+        }
+        Long storeId = Long.parseLong(tenantId);
+        Inventory inventory = inventoryRepository.findByIdAndBranch_StoreId(id, storeId)
+                .orElseThrow(() -> new ResourceNotFoundException("Inventory not found"));
         inventoryRepository.delete(inventory);
     }
 
     @Override
     public InventoryDTO getInventoryById(Long id) throws Exception {
-        Inventory inventory = inventoryRepository.findById(id)
-                .orElseThrow(() -> new Exception("Inventory not found"));
+        String tenantId = TenantContext.getTenantId();
+        if (tenantId == null) {
+            throw new ResourceNotFoundException("Inventory not found");
+        }
+        Long storeId = Long.parseLong(tenantId);
+        Inventory inventory = inventoryRepository.findByIdAndBranch_StoreId(id, storeId)
+                .orElseThrow(() -> new ResourceNotFoundException("Inventory not found"));
         return InventoryMapper.toDTO(inventory);
     }
 

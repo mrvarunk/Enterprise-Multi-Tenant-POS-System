@@ -1,5 +1,7 @@
 package com.pos.saas.service.impl;
 
+import com.pos.saas.config.TenantContext;
+import com.pos.saas.exception.ResourceNotFoundException;
 import com.pos.saas.mapper.OrderMapper;
 import com.pos.saas.model.*;
 import com.pos.saas.dto.OrderDTO;
@@ -74,8 +76,13 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public OrderDTO getOrderById(Long id) throws Exception {
-        Order order = orderRepository.findById(id)
-                .orElseThrow(() -> new Exception("Order record missing index parameters ID: " + id));
+        String tenantId = TenantContext.getTenantId();
+        if (tenantId == null) {
+            throw new ResourceNotFoundException("Order not found");
+        }
+        Long storeId = Long.parseLong(tenantId);
+        Order order = orderRepository.findByIdAndBranch_StoreId(id, storeId)
+                .orElseThrow(() -> new ResourceNotFoundException("Order not found"));
         return OrderMapper.toDTO(order);
     }
 
@@ -113,8 +120,13 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public void deleteOrder(Long id) throws Exception {
-        Order order = orderRepository.findById(id)
-                .orElseThrow(() -> new Exception("Order context tracking failure matching key parameter target"));
+        String tenantId = TenantContext.getTenantId();
+        if (tenantId == null) {
+            throw new ResourceNotFoundException("Order not found");
+        }
+        Long storeId = Long.parseLong(tenantId);
+        Order order = orderRepository.findByIdAndBranch_StoreId(id, storeId)
+                .orElseThrow(() -> new ResourceNotFoundException("Order not found"));
         orderRepository.delete(order);
     }
 }

@@ -1,6 +1,8 @@
 package com.pos.saas.service.impl;
 
+import com.pos.saas.config.TenantContext;
 import com.pos.saas.dto.ProductDTO;
+import com.pos.saas.exception.ResourceNotFoundException;
 import com.pos.saas.mapper.ProductMapper;
 import com.pos.saas.model.Product;
 import com.pos.saas.model.Store;
@@ -9,6 +11,9 @@ import com.pos.saas.repository.ProductRepository;
 import com.pos.saas.repository.StoreRepository;
 import com.pos.saas.service.ProductService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -23,6 +28,8 @@ public class ProductServiceImpl implements ProductService {
     private final StoreRepository storeRepository;
 
     @Override
+    @CachePut(value = "products", keyGenerator = "tenantAwareKeyGenerator")
+    @CacheEvict(value = "productsByStore", keyGenerator = "tenantAwareKeyGenerator", beforeInvocation = false)
     public ProductDTO createProduct(ProductDTO productDTO, User user) throws Exception {
         Store store = storeRepository.findById(productDTO.getStoreId())
                 .orElseThrow(() -> new Exception("Store not found"));
@@ -33,16 +40,29 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @Cacheable(value = "products", keyGenerator = "tenantAwareKeyGenerator")
     public ProductDTO getProductById(Long id) throws Exception {
-        Product product = productRepository.findById(id)
-                .orElseThrow(() -> new Exception("Product not found"));
+        String tenantId = TenantContext.getTenantId();
+        if (tenantId == null) {
+            throw new ResourceNotFoundException("Product not found");
+        }
+        Long storeId = Long.parseLong(tenantId);
+        Product product = productRepository.findByIdAndStoreId(id, storeId)
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
         return ProductMapper.toDTO(product);
     }
 
     @Override
+    @CachePut(value = "products", keyGenerator = "tenantAwareKeyGenerator")
+    @CacheEvict(value = "productsByStore", keyGenerator = "tenantAwareKeyGenerator")
     public ProductDTO updateProduct(Long id, ProductDTO productDTO, User user) throws Exception {
-        Product existingProduct = productRepository.findById(id)
-                .orElseThrow(() -> new Exception("Product not found"));
+        String tenantId = TenantContext.getTenantId();
+        if (tenantId == null) {
+            throw new ResourceNotFoundException("Product not found");
+        }
+        Long storeId = Long.parseLong(tenantId);
+        Product existingProduct = productRepository.findByIdAndStoreId(id, storeId)
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
 
         if (productDTO.getName() != null) existingProduct.setName(productDTO.getName());
         if (productDTO.getDescription() != null) existingProduct.setDescription(productDTO.getDescription());
@@ -58,13 +78,23 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @org.springframework.cache.annotation.Caching(evict = {
+            @CacheEvict(value = "products", keyGenerator = "tenantAwareKeyGenerator"),
+            @CacheEvict(value = "productsByStore", keyGenerator = "tenantAwareKeyGenerator")
+    })
     public void deleteProduct(Long id, User user) throws Exception {
-        Product product = productRepository.findById(id)
-                .orElseThrow(() -> new Exception("Product not found"));
+        String tenantId = TenantContext.getTenantId();
+        if (tenantId == null) {
+            throw new ResourceNotFoundException("Product not found");
+        }
+        Long storeId = Long.parseLong(tenantId);
+        Product product = productRepository.findByIdAndStoreId(id, storeId)
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
         productRepository.delete(product);
     }
 
     @Override
+    @Cacheable(value = "productsByStore", keyGenerator = "tenantAwareKeyGenerator")
     public List<ProductDTO> getProductsByStoreId(Long storeId) {
         List<Product> products = productRepository.findByStoreId(storeId);
         return products.stream().map(ProductMapper::toDTO).collect(Collectors.toList());

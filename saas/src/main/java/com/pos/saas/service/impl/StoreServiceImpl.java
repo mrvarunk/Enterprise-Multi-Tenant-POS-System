@@ -11,6 +11,9 @@ import com.pos.saas.repository.StoreRepository;
 import com.pos.saas.service.StoreService;
 import com.pos.saas.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -25,6 +28,7 @@ public class StoreServiceImpl implements StoreService {
     private final UserService userService;
 
     @Override
+    @CacheEvict(value = "stores", keyGenerator = "tenantAwareKeyGenerator", beforeInvocation = false)
     public StoreDTO createStore(StoreDTO storeDTO, User user) {
         Store store = StoreMapper.toEntity(storeDTO, user);
         Store savedStore = storeRepository.save(store);
@@ -32,6 +36,7 @@ public class StoreServiceImpl implements StoreService {
     }
 
     @Override
+    @Cacheable(value = "stores", keyGenerator = "tenantAwareKeyGenerator")
     public StoreDTO getStoreById(Long id) throws UserException {
         Store store = storeRepository.findById(id)
                 .orElseThrow(() -> new UserException("Store not found"));
@@ -39,6 +44,7 @@ public class StoreServiceImpl implements StoreService {
     }
 
     @Override
+    @Cacheable(value = "stores", keyGenerator = "tenantAwareKeyGenerator")
     public List<StoreDTO> getAllStores() {
         return storeRepository.findAll()
                 .stream()
@@ -63,6 +69,8 @@ public class StoreServiceImpl implements StoreService {
     }
 
     @Override
+    @CachePut(value = "stores", keyGenerator = "tenantAwareKeyGenerator")
+    @CacheEvict(value = "stores", keyGenerator = "tenantAwareKeyGenerator", beforeInvocation = false)
     public StoreDTO updateStore(Long id, StoreDTO storeDTO) throws UserException {
         User currentUser = userService.getCurrentUser();
         Store existingStore = storeRepository.findByStoreAdminId(currentUser.getId());
@@ -90,6 +98,10 @@ public class StoreServiceImpl implements StoreService {
     }
 
     @Override
+    @org.springframework.cache.annotation.Caching(evict = {
+            @CacheEvict(value = "stores", keyGenerator = "tenantAwareKeyGenerator"),
+            @CacheEvict(value = "stores", keyGenerator = "tenantAwareKeyGenerator", beforeInvocation = false)
+    })
     public void deleteStore(Long id) throws UserException {
         User currentUser = userService.getCurrentUser();
         Store store = storeRepository.findByStoreAdminId(currentUser.getId());
@@ -105,6 +117,7 @@ public class StoreServiceImpl implements StoreService {
                 .orElseThrow(() -> new UserException("Store not found"));
         store.setStatus(status);
         Store updatedStore = storeRepository.save(store);
+        // Update individual store cache and evict list
         return StoreMapper.toDTO(updatedStore);
     }
 }

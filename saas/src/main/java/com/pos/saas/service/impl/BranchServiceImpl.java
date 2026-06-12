@@ -1,5 +1,6 @@
 package com.pos.saas.service.impl;
 
+import com.pos.saas.config.TenantContext;
 import com.pos.saas.dto.BranchDTO;
 import com.pos.saas.exception.ResourceNotFoundException;
 import com.pos.saas.mapper.BranchMapper;
@@ -41,8 +42,13 @@ public class BranchServiceImpl implements BranchService {
 
     @Override
     public BranchDTO getBranchById(Long id) {
-        Branch branch = branchRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Branch not found with id: " + id));
+        String tenantId = TenantContext.getTenantId();
+        if (tenantId == null) {
+            throw new ResourceNotFoundException("Branch not found");
+        }
+        Long storeId = Long.parseLong(tenantId);
+        Branch branch = branchRepository.findByIdAndStoreId(id, storeId)
+                .orElseThrow(() -> new ResourceNotFoundException("Branch not found"));
         return BranchMapper.toDTO(branch);
     }
 
@@ -55,8 +61,13 @@ public class BranchServiceImpl implements BranchService {
 
     @Override
     public BranchDTO updateBranch(Long id, BranchDTO dto) {
-        Branch existingBranch = branchRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Branch not found with id: " + id));
+        String tenantId = TenantContext.getTenantId();
+        if (tenantId == null) {
+            throw new ResourceNotFoundException("Branch not found");
+        }
+        Long storeId = Long.parseLong(tenantId);
+        Branch existingBranch = branchRepository.findByIdAndStoreId(id, storeId)
+                .orElseThrow(() -> new ResourceNotFoundException("Branch not found"));
 
         existingBranch.setName(dto.getName());
         existingBranch.setAddress(dto.getAddress());
@@ -80,8 +91,13 @@ public class BranchServiceImpl implements BranchService {
 
     @Override
     public void deleteBranch(Long id) {
-        Branch branch = branchRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Branch not found with id: " + id));
+        String tenantId = TenantContext.getTenantId();
+        if (tenantId == null) {
+            throw new ResourceNotFoundException("Branch not found");
+        }
+        Long storeId = Long.parseLong(tenantId);
+        Branch branch = branchRepository.findByIdAndStoreId(id, storeId)
+                .orElseThrow(() -> new ResourceNotFoundException("Branch not found"));
         branchRepository.delete(branch);
     }
 }
