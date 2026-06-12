@@ -15,12 +15,12 @@ function App() {
             {/* Conditional Route Guard Routing Context Tree */}
             <Route
                 path="/cashier/*"
-                element={user?.role === 'BRANCH_CASHIER' ? <CashierRoutes /> : <Login />}
+                element={user?.role === 'ROLE_BRANCH_CASHIER' || user?.role === 'ROLE_CASHIER' ? <CashierRoutes /> : <Login />}
             />
 
             <Route
                 path="/admin/*"
-                element={user?.role === 'SUPER_ADMIN' || user?.role === 'STORE_OWNER' ? <AdminRoutes /> : <Login />}
+                element={user?.role === 'ROLE_ADMIN' || user?.role === 'ROLE_STORE_MANAGER' ? <AdminRoutes /> : <Login />}
             />
 
             {/* Structural Wildcard Fallback Handling Pipeline */}

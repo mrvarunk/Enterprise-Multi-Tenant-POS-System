@@ -20,7 +20,19 @@ const productSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
-            // ... existing fetchProductsByStore cases ...
+            // Fetch Products By Store
+            .addCase(fetchProductsByStore.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(fetchProductsByStore.fulfilled, (state, action) => {
+                state.loading = false;
+                state.products = action.payload;
+            })
+            .addCase(fetchProductsByStore.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            })
 
             // Admin: Create Product
             .addCase(createProduct.pending, (state) => {
@@ -55,6 +67,19 @@ const productSlice = createSlice({
             // Admin: Delete Product
             .addCase(deleteProduct.fulfilled, (state, action) => {
                 state.products = state.products.filter(p => p.id !== action.payload);
+            })
+
+            // Search Products
+            .addCase(searchProducts.pending, (state) => {
+                state.loading = true;
+            })
+            .addCase(searchProducts.fulfilled, (state, action) => {
+                state.loading = false;
+                state.searchResults = action.payload;
+            })
+            .addCase(searchProducts.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
             });
     }
 });

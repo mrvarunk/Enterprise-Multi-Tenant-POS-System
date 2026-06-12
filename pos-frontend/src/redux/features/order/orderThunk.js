@@ -17,9 +17,12 @@ export const getOrdersByBranch = createAsyncThunk(
     'order/getByBranch',
     async (branchId, { rejectWithValue }) => {
         try {
+            console.log(`Fetching orders for branch: ${branchId}`);
             const response = await api.get(`/api/orders/branch/${branchId}`);
+            console.log('Orders fetched:', response.data);
             return response.data;
         } catch (error) {
+            console.error('Failed to fetch orders:', error);
             return rejectWithValue(error.response?.data?.message || "Failed to fetch branch orders.");
         }
     }

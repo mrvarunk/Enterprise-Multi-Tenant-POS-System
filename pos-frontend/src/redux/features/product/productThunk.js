@@ -6,9 +6,12 @@ export const fetchProductsByStore = createAsyncThunk(
     'product/fetchByStore',
     async (storeId, { rejectWithValue }) => {
         try {
+            console.log(`Fetching products for store: ${storeId}`);
             const response = await api.get(`/api/products/store/${storeId}`);
+            console.log('Products fetched:', response.data);
             return response.data;
         } catch (error) {
+            console.error('Failed to fetch products:', error);
             return rejectWithValue(error.response?.data?.message || "Failed to load store products");
         }
     }

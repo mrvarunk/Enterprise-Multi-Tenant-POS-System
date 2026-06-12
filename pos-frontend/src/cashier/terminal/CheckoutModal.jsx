@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { X, CreditCard, Banknote, Smartphone, CheckCircle2 } from 'lucide-react';
 import { createOrder } from '../../redux/features/order/orderThunk';

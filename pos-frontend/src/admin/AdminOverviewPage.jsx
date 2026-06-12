@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { DollarSign, ShoppingBag, Users, AlertTriangle, TrendingUp, ArrowRight } from 'lucide-react';
+import { DollarSign, ShoppingBag, Users, AlertTriangle, TrendingUp } from 'lucide-react';
 import { getOrdersByBranch } from "../redux/features/order/orderThunk";
 import { fetchProductsByStore } from "../redux/features/product/productThunk";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../components/ui/table";
@@ -14,10 +14,20 @@ export default function AdminOverviewPage() {
     const { user } = useSelector((state) => state.auth);
 
     useEffect(() => {
-        if (user?.branchId) {
+        // For admin users, use storeId if available, otherwise use a default storeId (1)
+        const storeIdToUse = user?.storeId || 1;
+        const branchIdToUse = user?.branchId || 1;
+
+        console.log('Admin User:', user);
+        console.log('Fetching with storeId:', storeIdToUse, 'branchId:', branchIdToUse);
+
+        if (user?.role === 'ROLE_ADMIN' || user?.role === 'ROLE_STORE_MANAGER') {
             // Fetch raw arrays from backend to compile administrative insights
-            dispatch(getOrdersByBranch(user.branchId));
-            dispatch(fetchProductsByStore(user.branchId));
+            console.log('Admin user detected, dispatching data fetches...');
+            dispatch(getOrdersByBranch(branchIdToUse));
+            dispatch(fetchProductsByStore(storeIdToUse));
+        } else {
+            console.log('User role is not admin:', user?.role);
         }
     }, [dispatch, user]);
 

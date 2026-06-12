@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Search, Plus, Edit, Trash2, AlertTriangle } from 'lucide-react';
 import { fetchProductsByStore, deleteProduct } from '../../redux/features/product/productThunk';
@@ -20,12 +20,12 @@ export default function InventoryManagement() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [productToEdit, setProductToEdit] = useState(null);
 
-    useEffect(() => {
-        if (user?.branchId) {
-            dispatch(fetchProductsByStore(user.branchId));
-            dispatch(fetchCategoriesByStore(user.branchId));
-        }
-    }, [dispatch, user]);
+     useEffect(() => {
+         if (user?.storeId) {
+             dispatch(fetchProductsByStore(user.storeId));
+             dispatch(fetchCategoriesByStore(user.storeId));
+         }
+     }, [dispatch, user]);
 
     const filteredProducts = products.filter(product => {
         const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../../components/ui/dialog';
 import { Button } from '../../components/ui/button';
@@ -23,6 +23,7 @@ export default function ProductModal({ isOpen, onClose, productToEdit = null }) 
     // If we are editing, populate the form with existing data
     useEffect(() => {
         if (productToEdit) {
+            // eslint-disable-next-line react-hooks/set-state-in-effect
             setFormData({
                 name: productToEdit.name,
                 barcode: productToEdit.barcode,

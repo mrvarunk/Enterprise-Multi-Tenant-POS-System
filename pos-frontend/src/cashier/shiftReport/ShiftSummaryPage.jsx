@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Clock, Banknote, CreditCard, Smartphone, Calculator, CheckCircle2 } from 'lucide-react';
 import { getLiveShift, endShift } from '../../redux/features/shift/shiftThunk';

@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { startShift, getLiveShift, endShift } from './shiftThunk';
+import { getLiveShift, endShift } from './shiftThunk';
 
 const initialState = {
     currentShift: null,

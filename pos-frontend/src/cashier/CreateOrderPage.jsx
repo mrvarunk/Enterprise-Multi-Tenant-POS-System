@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Search } from 'lucide-react';
 import { fetchProductsByStore } from '../redux/features/product/productThunk';
@@ -22,9 +22,9 @@ export default function CreateOrderPage() {
 
     // Dynamic initial loading hook anchored to cashier contextual profile metadata
     useEffect(() => {
-        if (user?.branchId) {
-            dispatch(fetchProductsByStore(user.branchId));
-            dispatch(fetchCategoriesByStore(user.branchId));
+        if (user?.storeId) {
+            dispatch(fetchProductsByStore(user.storeId));
+            dispatch(fetchCategoriesByStore(user.storeId));
         }
     }, [dispatch, user]);
 

@@ -14,6 +14,17 @@ public class UserMapper {
         userDto.setCreatedAt(user.getCreatedAt());
         userDto.setUpdatedAt(user.getUpdatedAt());
         userDto.setLastLogin(user.getLastLogin());
+        
+        // Extract storeId - either directly from store or from branch's store
+        if (user.getStore() != null) {
+            userDto.setStoreId(user.getStore().getId());
+        } else if (user.getBranch() != null && user.getBranch().getStore() != null) {
+            userDto.setStoreId(user.getBranch().getStore().getId());
+        }
+        
+        // Extract branchId from branch if it exists
+        userDto.setBranchId(user.getBranch() != null ? user.getBranch().getId() : null);
+        
         return userDto;
     }
 

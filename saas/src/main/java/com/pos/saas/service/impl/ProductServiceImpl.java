@@ -66,11 +66,13 @@ public class ProductServiceImpl implements ProductService {
 
         if (productDTO.getName() != null) existingProduct.setName(productDTO.getName());
         if (productDTO.getDescription() != null) existingProduct.setDescription(productDTO.getDescription());
-        if (productDTO.getSkuId() != null) existingProduct.setSkuId(productDTO.getSkuId());
+        if (productDTO.getBarcode() != null) existingProduct.setBarcode(productDTO.getBarcode());
         if (productDTO.getImage() != null) existingProduct.setImage(productDTO.getImage());
         if (productDTO.getMrp() != 0) existingProduct.setMrp(productDTO.getMrp());
         if (productDTO.getSellingPrice() != 0) existingProduct.setSellingPrice(productDTO.getSellingPrice());
         if (productDTO.getBrand() != null) existingProduct.setBrand(productDTO.getBrand());
+        if (productDTO.getCostPrice() != 0) existingProduct.setCostPrice(productDTO.getCostPrice());
+        if (productDTO.getStockQuantity() != null) existingProduct.setStockQuantity(productDTO.getStockQuantity());
 
         existingProduct.setUpdatedAt(LocalDateTime.now());
         Product updatedProduct = productRepository.save(existingProduct);

@@ -41,22 +41,45 @@ const orderSlice = createSlice({
             })
 
             // Get Recent Orders
+            .addCase(getRecentOrders.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
             .addCase(getRecentOrders.fulfilled, (state, action) => {
+                state.loading = false;
                 state.recentOrders = action.payload;
+            })
+            .addCase(getRecentOrders.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
             })
 
             // Get Today's Orders
+            .addCase(getTodayOrdersByBranch.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
             .addCase(getTodayOrdersByBranch.fulfilled, (state, action) => {
+                state.loading = false;
                 state.todayOrders = action.payload;
+            })
+            .addCase(getTodayOrdersByBranch.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
             })
 
             // Get All Branch Orders
             .addCase(getOrdersByBranch.pending, (state) => {
                 state.loading = true;
+                state.error = null;
             })
             .addCase(getOrdersByBranch.fulfilled, (state, action) => {
                 state.loading = false;
                 state.orders = action.payload;
+            })
+            .addCase(getOrdersByBranch.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
             });
     }
 });

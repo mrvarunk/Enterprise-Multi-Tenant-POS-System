@@ -1,4 +1,3 @@
-import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { ShoppingCart, Hand, Trash2, CreditCard } from 'lucide-react';
 import { selectCartItems, clearCart, holdOrder } from '../../redux/features/cart/cartSlice';

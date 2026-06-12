@@ -1,4 +1,3 @@
-import React from 'react';
 import { Minus, Plus, Trash2 } from 'lucide-react';
 import { useDispatch } from 'react-redux';
 import { updateCartItemQuantity, removeFromCart } from '@/redux/features/cart/cartSlice.js';

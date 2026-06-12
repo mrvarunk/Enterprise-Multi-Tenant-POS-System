@@ -20,17 +20,22 @@ public class Product {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false, unique = true)
-    private String skuId;
+    @Column(unique = true)
+    private String barcode;
 
     private String description;
+    private double costPrice;
     private double mrp;
     private double sellingPrice;
     private String brand;
     private String image;
+    private Integer stockQuantity;
 
     @ManyToOne
     private Store store;
+
+    @ManyToOne
+    private Category category;
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;

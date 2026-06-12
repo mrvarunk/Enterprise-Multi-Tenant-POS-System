@@ -16,6 +16,7 @@ public class OrderMapper {
                 .paymentType(order.getPaymentType())
                 .orderStatus(order.getOrderStatus())
                 .branchId(order.getBranch() != null ? order.getBranch().getId() : null)
+                .cashierId(order.getCashier() != null ? order.getCashier().getId() : null)
                 .cashier(UserMapper.toDTO(order.getCashier()))
                 .customer(order.getCustomer())
                 .items(order.getItems().stream().map(OrderItemMapper::toDTO).collect(Collectors.toList()))

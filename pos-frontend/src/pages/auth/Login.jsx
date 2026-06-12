@@ -1,13 +1,15 @@
-import React, { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { loginUser } from '../../redux/features/auth/authThunk';
 import { ShoppingCart, AlertCircle } from 'lucide-react';
 import { Button } from '../../components/ui/button';
 
 export default function Login() {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const [formData, setFormData] = useState({ email: '', password: '' });
-    const { loading, error } = useSelector((state) => state.auth);
+    const { loading, error, user } = useSelector((state) => state.auth);
 
     const handleInputChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -17,6 +19,17 @@ export default function Login() {
         e.preventDefault();
         dispatch(loginUser(formData));
     };
+
+    // Navigate to dashboard after successful login
+    useEffect(() => {
+        if (user && user.role) {
+            if (user.role === 'ROLE_BRANCH_CASHIER' || user.role === 'ROLE_CASHIER') {
+                navigate('/cashier/dashboard');
+            } else if (user.role === 'ROLE_ADMIN' || user.role === 'ROLE_STORE_MANAGER') {
+                navigate('/admin');
+            }
+        }
+    }, [user, navigate]);
 
     return (
         <div className="flex min-h-screen items-center justify-center bg-slate-50 p-4 dark:bg-zinc-950">

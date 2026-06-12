@@ -5,10 +5,12 @@ export const fetchCategoriesByStore = createAsyncThunk(
     'category/fetchByStore',
     async (storeId, { rejectWithValue }) => {
         try {
-            // The interceptor automatically attaches the Bearer token behind the scenes
+            console.log(`Fetching categories for store: ${storeId}`);
             const response = await api.get(`/api/categories/store/${storeId}`);
+            console.log('Categories fetched:', response.data);
             return response.data;
         } catch (error) {
+            console.error('Failed to fetch categories:', error);
             return rejectWithValue(error.response?.data?.message || "Failed to load store categories");
         }
     }

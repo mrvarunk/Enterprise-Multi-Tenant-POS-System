@@ -18,6 +18,7 @@ public class OrderDTO {
     private PaymentType paymentType;
     private OrderStatus orderStatus;
     private Long branchId;
+    private Long cashierId;
     private UserDTO cashier;
     private Customer customer;
     private List<OrderItemDTO> items;
