@@ -2,6 +2,8 @@ import { Routes, Route } from 'react-router-dom';
 import Login from './pages/auth/Login';
 import CashierRoutes from './routes/CashierRoutes';
 import AdminRoutes from './routes/AdminRoutes'; // <-- ADD THIS IMPORT
+import CommandCenterLayout from './command-center/CommandCenterLayout';
+import CommandCenterPage from './command-center/CommandCenterPage';
 import { useSelector } from 'react-redux';
 
 function App() {
@@ -11,6 +13,12 @@ function App() {
     return (
         <Routes>
             <Route path="/login" element={<Login />} />
+
+            {/* TEMP preview route — remove before shipping */}
+            <Route path="/preview" element={<CommandCenterLayout />}>
+                <Route index element={<CommandCenterPage />} />
+            </Route>
+
 
             {/* Conditional Route Guard Routing Context Tree */}
             <Route
