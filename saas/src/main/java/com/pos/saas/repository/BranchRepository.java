@@ -11,5 +11,6 @@ public interface BranchRepository extends JpaRepository<Branch, Long> {
     List<Branch> findByStoreId(Long storeId);
 
     // IDOR Protection: Verify branch belongs to tenant's store
+    @SuppressWarnings("unused")
     Optional<Branch> findByIdAndStoreId(Long id, Long storeId);
 }

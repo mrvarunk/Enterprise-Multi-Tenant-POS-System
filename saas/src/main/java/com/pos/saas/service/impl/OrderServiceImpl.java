@@ -75,7 +75,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public OrderDTO getOrderById(Long id) throws Exception {
+    public OrderDTO getOrderById(Long id) {
         String tenantId = TenantContext.getTenantId();
         if (tenantId == null) {
             throw new ResourceNotFoundException("Order not found");
@@ -119,7 +119,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void deleteOrder(Long id) throws Exception {
+    public void deleteOrder(Long id) {
         String tenantId = TenantContext.getTenantId();
         if (tenantId == null) {
             throw new ResourceNotFoundException("Order not found");

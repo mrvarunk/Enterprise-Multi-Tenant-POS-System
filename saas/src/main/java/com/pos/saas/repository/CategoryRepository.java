@@ -11,5 +11,6 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
     List<Category> findByStoreId(Long storeId);
 
     // IDOR Protection: Verify category belongs to tenant's store
+    @SuppressWarnings("unused")
     Optional<Category> findByIdAndStoreId(Long id, Long storeId);
 }

@@ -12,6 +12,7 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     List<Order> findByCashierId(Long cashierId);
 
     // IDOR Protection: Verify order belongs to tenant's store via branch relationship
+    @SuppressWarnings({"unused", "Since15"})
     Optional<Order> findByIdAndBranch_StoreId(Long id, Long storeId);
 
     // Tracks daily shift revenue matching operational bounds

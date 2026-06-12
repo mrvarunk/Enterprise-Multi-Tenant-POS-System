@@ -40,7 +40,7 @@ public class InventoryServiceImpl implements InventoryService {
     }
 
     @Override
-    public InventoryDTO updateInventory(Long id, InventoryDTO inventoryDTO) throws Exception {
+    public InventoryDTO updateInventory(Long id, InventoryDTO inventoryDTO) {
         String tenantId = TenantContext.getTenantId();
         if (tenantId == null) {
             throw new ResourceNotFoundException("Inventory not found");
@@ -56,7 +56,7 @@ public class InventoryServiceImpl implements InventoryService {
     }
 
     @Override
-    public void deleteInventory(Long id) throws Exception {
+    public void deleteInventory(Long id) {
         String tenantId = TenantContext.getTenantId();
         if (tenantId == null) {
             throw new ResourceNotFoundException("Inventory not found");
@@ -68,7 +68,7 @@ public class InventoryServiceImpl implements InventoryService {
     }
 
     @Override
-    public InventoryDTO getInventoryById(Long id) throws Exception {
+    public InventoryDTO getInventoryById(Long id) {
         String tenantId = TenantContext.getTenantId();
         if (tenantId == null) {
             throw new ResourceNotFoundException("Inventory not found");

@@ -13,6 +13,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     List<Product> findByStoreId(Long storeId);
 
     // IDOR Protection: Verify product belongs to tenant's store
+    @SuppressWarnings("unused")
     Optional<Product> findByIdAndStoreId(Long id, Long storeId);
 
     @Query("SELECT p FROM Product p WHERE p.store.id = :storeId AND " +

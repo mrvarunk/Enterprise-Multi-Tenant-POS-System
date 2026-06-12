@@ -12,6 +12,7 @@ public interface InventoryRepository extends JpaRepository<Inventory, Long> {
     List<Inventory> findByBranchId(Long branchId);
 
     // IDOR Protection: Verify inventory belongs to tenant's store (via branch relationship)
+    @SuppressWarnings("unused")
     Optional<Inventory> findByIdAndBranch_StoreId(Long id, Long storeId);
 
     Inventory findByProductIdAndBranchId(Long productId, Long branchId);
