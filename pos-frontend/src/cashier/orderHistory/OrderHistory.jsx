@@ -18,9 +18,8 @@ export default function OrderHistory() {
 
     // Fetch orders when the screen loads
     useEffect(() => {
-        if (user?.branchId) {
-            dispatch(getTodayOrdersByBranch(user.branchId));
-        }
+        const branchId = user?.branchId || 1;
+        dispatch(getTodayOrdersByBranch(branchId));
     }, [dispatch, user]);
 
     // Filter logic for the search bar (Search by Order ID)
@@ -29,13 +28,13 @@ export default function OrderHistory() {
     );
 
     return (
-        <div className="flex flex-col h-full space-y-6">
+        <div className="flex flex-col h-full space-y-6 text-zinc-900">
 
             {/* Page Header */}
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                 <div>
-                    <h1 className="text-2xl font-bold tracking-tight">Today's Transactions</h1>
-                    <p className="text-sm text-muted-foreground">View and audit all receipts processed during this shift.</p>
+                    <h1 className="text-2xl font-semibold tracking-tight text-zinc-900">Today's Transactions</h1>
+                    <p className="text-sm text-zinc-500">View and audit all receipts processed during this shift.</p>
                 </div>
 
                 <div className="relative w-full sm:w-72">
@@ -45,21 +44,21 @@ export default function OrderHistory() {
                         placeholder="Search by Receipt ID..."
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
-                        className="w-full pl-9 pr-4 py-2 bg-card border border-input rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-sm"
+                        className="w-full pl-9 pr-4 py-2 bg-white border border-zinc-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-zinc-900 text-sm"
                     />
                 </div>
             </div>
 
             {/* Data Table */}
-            <div className="flex-1 overflow-hidden bg-card border border-border rounded-xl shadow-sm">
+            <div className="flex-1 overflow-hidden bg-white border border-zinc-200 rounded-xl shadow-sm">
                 {loading ? (
                     <div className="flex h-full items-center justify-center">
-                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+                        <div className="animate-spin rounded-full h-8 w-8 border-2 border-zinc-200 border-t-zinc-900"></div>
                     </div>
                 ) : filteredOrders.length === 0 ? (
                     <div className="flex flex-col h-full items-center justify-center text-muted-foreground space-y-3">
-                        <FileText className="h-12 w-12 opacity-20" />
-                        <p>No transactions found for today.</p>
+                        <FileText className="h-12 w-12 text-zinc-200" />
+                        <p className="text-zinc-500">No transactions found for today.</p>
                     </div>
                 ) : (
                     <div className="h-full overflow-auto">
@@ -75,17 +74,13 @@ export default function OrderHistory() {
                             </TableHeader>
                             <TableBody>
                                 {filteredOrders.map((order) => (
-                                    <TableRow
-                                        key={order.id}
-                                        className="cursor-pointer hover:bg-secondary/50"
-                                        onClick={() => setSelectedOrder(order)}
-                                    >
-                                        <TableCell className="font-medium text-primary">#{order.id}</TableCell>
+                                    <TableRow key={order.id} className="cursor-pointer hover:bg-zinc-50" onClick={() => setSelectedOrder(order)}>
+                                        <TableCell className="font-medium text-zinc-900 tabular-nums">#{order.id}</TableCell>
                                         <TableCell>
                                             {new Date(order.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                                         </TableCell>
                                         <TableCell>
-                                            <span className="px-2.5 py-1 bg-secondary text-secondary-foreground rounded-md text-xs font-medium">
+                                            <span className="px-2.5 py-1 bg-zinc-50 text-zinc-700 border border-zinc-100 rounded-md text-xs font-medium">
                                                 {order.paymentType}
                                             </span>
                                         </TableCell>

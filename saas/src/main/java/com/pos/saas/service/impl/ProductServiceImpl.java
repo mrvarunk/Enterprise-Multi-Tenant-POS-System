@@ -7,6 +7,7 @@ import com.pos.saas.mapper.ProductMapper;
 import com.pos.saas.model.Product;
 import com.pos.saas.model.Store;
 import com.pos.saas.model.User;
+import com.pos.saas.repository.CategoryRepository;
 import com.pos.saas.repository.ProductRepository;
 import com.pos.saas.repository.StoreRepository;
 import com.pos.saas.service.ProductService;
@@ -26,6 +27,7 @@ public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
     private final StoreRepository storeRepository;
+    private final CategoryRepository categoryRepository;
 
     @Override
     @CachePut(value = "products", keyGenerator = "tenantAwareKeyGenerator")
@@ -35,6 +37,10 @@ public class ProductServiceImpl implements ProductService {
                 .orElseThrow(() -> new Exception("Store not found"));
 
         Product product = ProductMapper.toEntity(productDTO, store);
+        if (productDTO.getCategoryId() != null) {
+            categoryRepository.findById(productDTO.getCategoryId())
+                    .ifPresent(product::setCategory);
+        }
         Product savedProduct = productRepository.save(product);
         return ProductMapper.toDTO(savedProduct);
     }
@@ -73,6 +79,10 @@ public class ProductServiceImpl implements ProductService {
         if (productDTO.getBrand() != null) existingProduct.setBrand(productDTO.getBrand());
         if (productDTO.getCostPrice() != 0) existingProduct.setCostPrice(productDTO.getCostPrice());
         if (productDTO.getStockQuantity() != null) existingProduct.setStockQuantity(productDTO.getStockQuantity());
+        if (productDTO.getCategoryId() != null) {
+            categoryRepository.findById(productDTO.getCategoryId())
+                    .ifPresent(existingProduct::setCategory);
+        }
 
         existingProduct.setUpdatedAt(LocalDateTime.now());
         Product updatedProduct = productRepository.save(existingProduct);

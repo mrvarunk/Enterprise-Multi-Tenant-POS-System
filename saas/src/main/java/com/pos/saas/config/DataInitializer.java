@@ -8,6 +8,8 @@ import com.pos.saas.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
+import com.pos.saas.domain.UserRole;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -25,6 +27,7 @@ public class DataInitializer implements CommandLineRunner {
     private final CategoryRepository categoryRepository;
     private final OrderRepository orderRepository;
     private final CustomerRepository customerRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public void run(String... args) throws Exception {
@@ -67,23 +70,28 @@ public class DataInitializer implements CommandLineRunner {
             }
         }
 
+        // Ensure default users exist and have known passwords
+        initializeUser("admin@pos.com", "admin123", UserRole.ROLE_ADMIN, 1L, null);
+        initializeUser("owner@pos.com", "owner123", UserRole.ROLE_BRANCH_MANAGER, 1L, null);
+        initializeUser("cashier@pos.com", "cashier123", UserRole.ROLE_CASHIER, 1L, 1L);
+
         // Create sample categories if none exist
         if (categoryRepository.count() == 0) {
             Optional<Store> storeOpt = storeRepository.findById(1L);
             if (storeOpt.isPresent()) {
-                Category electronics = new Category();
-                electronics.setName("Electronics");
-                electronics.setStore(storeOpt.get());
+                Category mensClothing = new Category();
+                mensClothing.setName("Men's Clothing");
+                mensClothing.setStore(storeOpt.get());
 
-                Category clothing = new Category();
-                clothing.setName("Clothing");
-                clothing.setStore(storeOpt.get());
+                Category womensClothing = new Category();
+                womensClothing.setName("Women's Clothing");
+                womensClothing.setStore(storeOpt.get());
 
-                Category food = new Category();
-                food.setName("Food & Beverages");
-                food.setStore(storeOpt.get());
+                Category homeKitchen = new Category();
+                homeKitchen.setName("Home & Kitchen");
+                homeKitchen.setStore(storeOpt.get());
 
-                categoryRepository.saveAll(Arrays.asList(electronics, clothing, food));
+                categoryRepository.saveAll(Arrays.asList(mensClothing, womensClothing, homeKitchen));
                 System.out.println("✓ Created sample categories");
             }
         }
@@ -93,43 +101,43 @@ public class DataInitializer implements CommandLineRunner {
             Optional<Store> storeOpt = storeRepository.findById(1L);
             if (storeOpt.isPresent()) {
                 java.util.List<Category> allCategories = categoryRepository.findAll();
-                Category electronics = allCategories.isEmpty() ? null : allCategories.get(0);
-
-                Product laptop = new Product();
-                laptop.setName("Laptop Computer");
-                laptop.setBarcode("PROD001");
-                laptop.setCostPrice(500.0);
-                laptop.setMrp(899.99);
-                laptop.setSellingPrice(799.99);
-                laptop.setStockQuantity(15);
-                laptop.setDescription("High-performance laptop for work and gaming");
-                laptop.setBrand("TechBrand");
-                laptop.setStore(storeOpt.get());
-                laptop.setCategory(electronics);
+                Category mensClothing = allCategories.isEmpty() ? null : allCategories.get(0);
 
                 Product shirt = new Product();
-                shirt.setName("Cotton T-Shirt");
-                shirt.setBarcode("PROD002");
-                shirt.setCostPrice(5.0);
-                shirt.setMrp(19.99);
-                shirt.setSellingPrice(14.99);
-                shirt.setStockQuantity(50);
-                shirt.setDescription("Comfortable cotton t-shirt");
-                shirt.setBrand("FashionBrand");
+                shirt.setName("Slim Fit Oxford Shirt");
+                shirt.setBarcode("PROD001");
+                shirt.setCostPrice(350.0);
+                shirt.setMrp(1299.0);
+                shirt.setSellingPrice(1199.0);
+                shirt.setStockQuantity(40);
+                shirt.setDescription("Premium cotton oxford button-down shirt");
+                shirt.setBrand("Arrow");
                 shirt.setStore(storeOpt.get());
+                shirt.setCategory(mensClothing);
 
-                Product coffee = new Product();
-                coffee.setName("Premium Coffee Beans");
-                coffee.setBarcode("PROD003");
-                coffee.setCostPrice(2.0);
-                coffee.setMrp(8.99);
-                coffee.setSellingPrice(5.99);
-                coffee.setStockQuantity(100);
-                coffee.setDescription("Fresh roasted coffee beans");
-                coffee.setBrand("CoffeeBrand");
-                coffee.setStore(storeOpt.get());
+                Product pants = new Product();
+                pants.setName("Classic Chino Pants");
+                pants.setBarcode("PROD002");
+                pants.setCostPrice(500.0);
+                pants.setMrp(1899.0);
+                pants.setSellingPrice(1699.0);
+                pants.setStockQuantity(30);
+                pants.setDescription("Stretch cotton chino trousers");
+                pants.setBrand("U.S. Polo Assn.");
+                pants.setStore(storeOpt.get());
 
-                productRepository.saveAll(Arrays.asList(laptop, shirt, coffee));
+                Product bedsheet = new Product();
+                bedsheet.setName("Cotton Bed Sheet Set");
+                bedsheet.setBarcode("PROD003");
+                bedsheet.setCostPrice(500.0);
+                bedsheet.setMrp(1999.0);
+                bedsheet.setSellingPrice(1799.0);
+                bedsheet.setStockQuantity(25);
+                bedsheet.setDescription("King-size 300 TC cotton bedsheet with 2 pillow covers");
+                bedsheet.setBrand("Spaces");
+                bedsheet.setStore(storeOpt.get());
+
+                productRepository.saveAll(Arrays.asList(shirt, pants, bedsheet));
                 System.out.println("✓ Created sample products");
             }
         }
@@ -176,6 +184,35 @@ public class DataInitializer implements CommandLineRunner {
         }
 
         System.out.println("✓ Data initialization complete!");
+    }
+
+    private void initializeUser(String email, String plaintextPassword, UserRole role, Long storeId, Long branchId) {
+        User user = userRepository.findByEmail(email);
+        if (user == null) {
+            user = new User();
+            user.setEmail(email);
+            user.setCreatedAt(LocalDateTime.now());
+        }
+        
+        user.setFullName(role.name().replace("ROLE_", "") + " User");
+        user.setPassword(passwordEncoder.encode(plaintextPassword));
+        user.setRole(role);
+        user.setUpdatedAt(LocalDateTime.now());
+
+        if (storeId != null) {
+            storeRepository.findById(storeId).ifPresent(user::setStore);
+        } else {
+            user.setStore(null);
+        }
+
+        if (branchId != null) {
+            branchRepository.findById(branchId).ifPresent(user::setBranch);
+        } else {
+            user.setBranch(null);
+        }
+
+        userRepository.save(user);
+        System.out.println("✓ Initialized/updated user: " + email + " with role " + role);
     }
 }
 

@@ -24,52 +24,32 @@ export default function CartItem({ item }) {
     };
 
     return (
-        <div className="flex items-center justify-between p-3 border-b border-border hover:bg-secondary/20 transition-colors select-none">
+        <div className="flex items-center justify-between p-3 border-b border-zinc-100 hover:bg-zinc-50 transition-colors select-none">
             {/* Product Meta Info */}
             <div className="flex-1 pr-2">
-                <h4 className="text-sm font-semibold line-clamp-1 text-foreground">
-                    {item.product.name}
-                </h4>
-                <p className="text-xs text-muted-foreground">
-                    ₹{item.product.sellingPrice.toFixed(2)}
-                </p>
+                <h4 className="text-sm font-semibold line-clamp-1 text-zinc-900">{item.product.name}</h4>
+                <p className="text-[11px] text-zinc-500 mt-0.5 tabular-nums">₹{(item.product.sellingPrice || 0).toFixed(2)}</p>
             </div>
 
             {/* Quantity Controls & Math Layout */}
             <div className="flex items-center gap-3">
-                {/* Stepper Buttons */}
-                <div className="flex items-center border border-border rounded-lg bg-background overflow-hidden shadow-sm">
-                    <button
-                        type="button"
-                        onClick={handleDecrease}
-                        className="p-1.5 hover:bg-secondary text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
-                    >
+                {/* Minimalist Stepper */}
+                <div className="flex items-center gap-2">
+                    <button type="button" onClick={handleDecrease} className="text-zinc-400 hover:text-zinc-900 transition-colors cursor-pointer">
                         <Minus size={14} />
                     </button>
-                    <span className="w-8 text-center text-xs font-bold text-foreground">
-                        {item.quantity}
-                    </span>
-                    <button
-                        type="button"
-                        onClick={handleIncrease}
-                        className="p-1.5 hover:bg-secondary text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
-                    >
+                    <span className="w-6 text-center text-sm font-semibold text-zinc-900 tabular-nums">{item.quantity}</span>
+                    <button type="button" onClick={handleIncrease} className="text-zinc-400 hover:text-zinc-900 transition-colors cursor-pointer">
                         <Plus size={14} />
                     </button>
                 </div>
 
                 {/* Line Item Aggregate Cost */}
-                <p className="text-sm font-bold w-20 text-right text-foreground">
-                    ₹{(item.product.sellingPrice * item.quantity).toFixed(2)}
-                </p>
+                <p className="text-sm font-bold tabular-nums w-16 text-right text-zinc-900">₹{((item.product.sellingPrice || 0) * item.quantity).toFixed(2)}</p>
 
-                {/* Hard Drop Clear Trigger */}
-                <button
-                    type="button"
-                    onClick={handleRemove}
-                    className="text-muted-foreground hover:text-destructive p-1.5 rounded-md hover:bg-destructive/5 transition-colors cursor-pointer"
-                >
-                    <Trash2 size={15} />
+                {/* Trash Trigger */}
+                <button type="button" onClick={handleRemove} className="text-zinc-400 hover:text-red-500 transition-colors cursor-pointer ml-1">
+                    <Trash2 size={14} />
                 </button>
             </div>
         </div>

@@ -9,34 +9,33 @@ export default function CartSection({ onProceedPayment }) {
     const dispatch = useDispatch();
     const cartItems = useSelector(selectCartItems);
 
-    // Calculates total unique item varieties in the queue
     const totalUniqueItems = cartItems.length;
 
     return (
-        <div className="flex flex-col h-full w-full bg-card shadow-sm">
+        <div className="flex flex-col h-full w-full bg-white select-none">
 
-            {/* 1. Header State Display Bar */}
-            <div className="flex items-center justify-between p-4 border-b border-border bg-secondary/10">
+            {/* Header Area */}
+            <div className="flex items-center justify-between p-4 border-b border-zinc-200 shrink-0">
                 <div className="flex items-center gap-2">
-                    <ShoppingCart size={20} className="text-primary" />
-                    <h2 className="text-base font-bold tracking-tight">Current Order</h2>
+                    <ShoppingCart size={18} className="text-[#D4A017]" />
+                    <h2 className="text-sm font-semibold tracking-tight text-zinc-900">Current Order</h2>
                 </div>
-                <span className="bg-primary/10 text-primary text-xs font-bold px-2.5 py-1 rounded-full">
-                    {totalUniqueItems} {totalUniqueItems === 1 ? 'Item' : 'Items'}
+                <span className="bg-[#D4A017]/10 text-[#D4A017] text-[10px] uppercase tracking-wider px-2 py-0.5 rounded border border-[#D4A017]/20 tabular-nums">
+                    {totalUniqueItems} {totalUniqueItems === 1 ? 'Variety' : 'Varieties'}
                 </span>
             </div>
 
-            {/* 2. Scrollable Checkout Cart List Area */}
-            <div className="flex-1 overflow-y-auto p-2 scrollbar-thin">
+            {/* Scrollable Cart List Area */}
+            <div className="flex-1 overflow-y-auto p-0">
                 {cartItems.length === 0 ? (
-                    <div className="flex flex-col items-center justify-center h-full text-muted-foreground space-y-3">
-                        <div className="p-4 bg-secondary/40 rounded-full">
-                            <ShoppingCart size={32} className="opacity-40" />
+                    <div className="flex flex-col items-center justify-center h-full text-zinc-400 space-y-3">
+                        <div className="p-4 bg-zinc-50 rounded-full">
+                            <ShoppingCart size={24} className="opacity-30" />
                         </div>
-                        <p className="text-sm font-medium">Checkout basket is empty</p>
+                        <p className="text-xs font-semibold uppercase tracking-wider">Cart is empty</p>
                     </div>
                 ) : (
-                    <div className="space-y-0.5">
+                    <div className="space-y-0">
                         {cartItems.map((item) => (
                             <CartItem key={item.product.id} item={item} />
                         ))}
@@ -44,41 +43,40 @@ export default function CartSection({ onProceedPayment }) {
                 )}
             </div>
 
-            {/* 3. Aggregation & Action Control Panel Footer */}
+            {/* Aggregation Footer Panel */}
             {cartItems.length > 0 && (
-                <div className="p-4 border-t border-border bg-card space-y-4 shadow-[0_-10px_30px_-15px_rgba(0,0,0,0.05)]">
+                <div className="bg-white flex flex-col border-t border-zinc-200">
+                    <div className="px-4">
+                        <CartSummary />
+                    </div>
 
-                    {/* Real-time Math Breakdown Injector */}
-                    <CartSummary />
-
-                    {/* Secondary Transaction Queuing Toggles */}
-                    <div className="grid grid-cols-2 gap-3">
+                    <div className="grid grid-cols-2 gap-3 px-4 pb-4">
                         <Button
                             variant="outline"
                             size="sm"
-                            className="w-full text-destructive hover:bg-destructive/10 hover:text-destructive border-border"
+                            className="w-full text-zinc-500 hover:text-zinc-900 border-zinc-200 hover:bg-zinc-50 rounded-md text-xs font-medium uppercase tracking-wider transition-all cursor-pointer"
                             onClick={() => dispatch(clearCart())}
                         >
-                            <Trash2 size={15} className="mr-2" /> Clear Cart
+                            <Trash2 size={13} className="mr-1.5" /> Void
                         </Button>
                         <Button
                             variant="outline"
                             size="sm"
-                            className="w-full border-border"
+                            className="w-full text-zinc-500 hover:text-zinc-900 border-zinc-200 hover:bg-zinc-50 rounded-md text-xs font-medium uppercase tracking-wider transition-all cursor-pointer"
                             onClick={() => dispatch(holdOrder())}
                         >
-                            <Hand size={15} className="mr-2" /> Hold Bill
+                            <Hand size={13} className="mr-1.5" /> Hold
                         </Button>
                     </div>
 
-                    {/* Primary Gateway Trigger */}
-                    <Button
-                        size="lg"
-                        className="w-full text-sm font-bold tracking-wide shadow-sm hover:shadow transition-all"
+                    {/* Primary Gateway Trigger (Edge-to-Edge) */}
+                    <button
+                        className="w-full py-5 bg-[#D4A017] text-[#09090B] font-bold text-base uppercase tracking-wider transition-colors hover:bg-[#c29113] flex items-center justify-center gap-2 cursor-pointer shadow-inner"
                         onClick={onProceedPayment}
                     >
-                        <CreditCard size={18} className="mr-2" /> Proceed to Payment
-                    </Button>
+                        <CreditCard size={18} />
+                        Pay Now
+                    </button>
                 </div>
             )}
         </div>

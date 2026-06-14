@@ -6,7 +6,7 @@ import com.pos.saas.mapper.InventoryMapper;
 import com.pos.saas.model.Branch;
 import com.pos.saas.model.Inventory;
 import com.pos.saas.model.Product;
-import com.pos.saas.payload.dto.InventoryDTO;
+import com.pos.saas.dto.InventoryDTO;
 import com.pos.saas.repository.BranchRepository;
 import com.pos.saas.repository.InventoryRepository;
 import com.pos.saas.repository.ProductRepository;

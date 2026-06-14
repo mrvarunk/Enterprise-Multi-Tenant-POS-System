@@ -20,7 +20,7 @@ function App() {
 
             <Route
                 path="/admin/*"
-                element={user?.role === 'ROLE_ADMIN' || user?.role === 'ROLE_STORE_MANAGER' ? <AdminRoutes /> : <Login />}
+                element={user?.role === 'ROLE_ADMIN' || user?.role === 'ROLE_STORE_MANAGER' || user?.role === 'ROLE_BRANCH_MANAGER' ? <AdminRoutes /> : <Login />}
             />
 
             {/* Structural Wildcard Fallback Handling Pipeline */}

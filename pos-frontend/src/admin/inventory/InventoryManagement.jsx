@@ -1,10 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Search, Plus, Edit, Trash2, AlertTriangle } from 'lucide-react';
+import { Search, Plus, Edit, Trash2 } from 'lucide-react';
 import { fetchProductsByStore, deleteProduct } from '../../redux/features/product/productThunk';
 import { fetchCategoriesByStore } from '../../redux/features/category/categoryThunk';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../../components/ui/table';
-import { Button } from '../../components/ui/button';
 import ProductModal from './ProductModal';
 
 export default function InventoryManagement() {
@@ -21,16 +19,17 @@ export default function InventoryManagement() {
     const [productToEdit, setProductToEdit] = useState(null);
 
      useEffect(() => {
-         if (user?.storeId) {
-             dispatch(fetchProductsByStore(user.storeId));
-             dispatch(fetchCategoriesByStore(user.storeId));
-         }
+         const storeId = user?.storeId || 1;
+         dispatch(fetchProductsByStore(storeId));
+         dispatch(fetchCategoriesByStore(storeId));
      }, [dispatch, user]);
 
     const filteredProducts = products.filter(product => {
-        const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            product.barcode.includes(searchQuery);
-        const matchesCategory = selectedCategory === 'ALL' || (product.category && product.category.id === selectedCategory);
+        const nameMatch = product.name ? product.name.toLowerCase().includes(searchQuery.toLowerCase()) : false;
+        const barcodeMatch = product.barcode ? product.barcode.includes(searchQuery) : false;
+        const matchesSearch = nameMatch || barcodeMatch;
+        const matchesCategory = selectedCategory === 'ALL' || (product.category && String(product.category.id) === String(selectedCategory));
+
         return matchesSearch && matchesCategory;
     });
 
@@ -52,32 +51,35 @@ export default function InventoryManagement() {
 
     return (
         <div className="space-y-6">
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            {/* Header */}
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
                 <div>
-                    <h1 className="text-2xl font-bold tracking-tight">Stock Control</h1>
-                    <p className="text-sm text-muted-foreground">Manage inventory levels, pricing, and new product lines.</p>
+                    <h1 className="text-2xl font-semibold text-zinc-900">Stock Ledger</h1>
+                    <p className="text-[10px] uppercase tracking-wider text-zinc-500 mt-1">Catalog & Inventory Management</p>
                 </div>
-                <Button onClick={handleAddNew} className="shadow-md">
-                    <Plus className="mr-2 h-4 w-4" /> Add New Product
-                </Button>
+                <div>
+                    <button onClick={handleAddNew} className="inline-flex items-center gap-2 px-4 py-2 bg-zinc-900 text-white rounded-lg text-sm font-medium shadow-md transition-all">
+                        <Plus size={14} /> Add Product
+                    </button>
+                </div>
             </div>
 
             {/* Filter Controls */}
-            <div className="flex flex-col sm:flex-row gap-4 bg-card p-4 rounded-xl border border-border shadow-sm">
+            <div className="flex flex-col md:flex-row gap-4">
                 <div className="relative flex-1">
-                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-400" />
                     <input
                         type="text"
-                        placeholder="Search by product name or barcode..."
+                        placeholder="Search stock by name or barcode..."
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
-                        className="w-full pl-9 pr-4 py-2 bg-background border border-input rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                        className="w-full pl-11 pr-5 py-3 bg-white border border-zinc-200 rounded-lg text-sm text-zinc-900 focus:outline-none focus:ring-2 focus:ring-zinc-900"
                     />
                 </div>
                 <select
                     value={selectedCategory}
                     onChange={(e) => setSelectedCategory(e.target.value)}
-                    className="w-full sm:w-48 p-2 bg-background border border-input rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                    className="w-full md:w-52 px-4 py-3 bg-white border border-zinc-200 rounded-lg text-sm text-zinc-900 focus:outline-none focus:ring-2 focus:ring-zinc-900 cursor-pointer"
                 >
                     <option value="ALL">All Categories</option>
                     {categories.map(cat => (
@@ -87,61 +89,67 @@ export default function InventoryManagement() {
             </div>
 
             {/* Inventory Table */}
-            <div className="bg-card border border-border rounded-xl shadow-sm overflow-hidden">
-                <Table>
-                    <TableHeader>
-                        <TableRow>
-                            <TableHead>Product Name</TableHead>
-                            <TableHead>SKU / Barcode</TableHead>
-                            <TableHead>Category</TableHead>
-                            <TableHead className="text-right">Cost (₹)</TableHead>
-                            <TableHead className="text-right">Price (₹)</TableHead>
-                            <TableHead className="text-center">Stock</TableHead>
-                            <TableHead className="text-right">Actions</TableHead>
-                        </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                        {loading ? (
-                            <TableRow><TableCell colSpan={7} className="text-center py-10">Loading inventory...</TableCell></TableRow>
-                        ) : filteredProducts.length === 0 ? (
-                            <TableRow><TableCell colSpan={7} className="text-center py-10 text-muted-foreground">No products found.</TableCell></TableRow>
-                        ) : (
-                            filteredProducts.map((product) => (
-                                <TableRow key={product.id}>
-                                    <TableCell className="font-medium">{product.name}</TableCell>
-                                    <TableCell className="font-mono text-xs text-muted-foreground">{product.barcode}</TableCell>
-                                    <TableCell><span className="px-2 py-1 bg-secondary text-secondary-foreground text-xs rounded-md">{product.category?.name || 'Uncategorized'}</span></TableCell>
-                                    <TableCell className="text-right">₹{product.costPrice.toFixed(2)}</TableCell>
-                                    <TableCell className="text-right font-semibold">₹{product.sellingPrice.toFixed(2)}</TableCell>
-                                    <TableCell className="text-center">
-                                        <div className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold ${product.stockQuantity <= 10 ? 'bg-destructive/10 text-destructive' : 'bg-emerald-500/10 text-emerald-600'}`}>
-                                            {product.stockQuantity <= 10 && <AlertTriangle size={12} />}
-                                            {product.stockQuantity}
-                                        </div>
-                                    </TableCell>
-                                    <TableCell className="text-right">
-                                        <div className="flex justify-end gap-2">
-                                            <Button variant="ghost" size="icon" onClick={() => handleEdit(product)}>
-                                                <Edit className="h-4 w-4" />
-                                            </Button>
-                                            <Button variant="ghost" size="icon" className="text-destructive hover:bg-destructive/10 hover:text-destructive" onClick={() => handleDelete(product.id, product.name)}>
-                                                <Trash2 className="h-4 w-4" />
-                                            </Button>
-                                        </div>
-                                    </TableCell>
-                                </TableRow>
-                            ))
-                        )}
-                    </TableBody>
-                </Table>
+            <div className="w-full bg-white border border-zinc-200 rounded-xl overflow-hidden shadow-sm">
+                <div className="overflow-x-auto">
+                    <table className="w-full text-left text-sm">
+                        <thead className="bg-zinc-50 border-b border-zinc-200 text-xs text-zinc-500 uppercase tracking-wider">
+                            <tr>
+                                <th className="px-5 py-3">Product Name</th>
+                                <th className="px-5 py-3">SKU / Barcode</th>
+                                <th className="px-5 py-3">Category</th>
+                                <th className="px-5 py-3 text-right">Cost (₹)</th>
+                                <th className="px-5 py-3 text-right">Price (₹)</th>
+                                <th className="px-5 py-3 text-center">Stock</th>
+                                <th className="px-5 py-3 text-right">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody className="divide-y divide-zinc-100">
+                            {loading ? (
+                                <tr>
+                                    <td colSpan={7} className="py-12 text-center text-sm text-zinc-500">Loading inventory catalog...</td>
+                                </tr>
+                            ) : filteredProducts.length === 0 ? (
+                                <tr>
+                                    <td colSpan={7} className="py-12 text-center text-sm text-zinc-500">No products matched the active filters.</td>
+                                </tr>
+                            ) : (
+                                filteredProducts.map((product) => (
+                                    <tr key={product.id} className="hover:bg-zinc-50 transition-colors">
+                                        <td className="px-5 py-4 text-zinc-900">{product.name}</td>
+                                        <td className="px-5 py-4 font-mono text-xs text-zinc-500 tabular-nums">{product.barcode}</td>
+                                        <td className="px-5 py-4 text-sm text-zinc-700">
+                                            <span className="inline-block px-2 py-1 text-[10px] uppercase tracking-wider font-medium bg-zinc-50 border border-zinc-100 rounded-md text-zinc-500">
+                                                {product.category?.name || 'Uncategorized'}
+                                            </span>
+                                        </td>
+                                        <td className="px-5 py-4 text-right font-mono text-xs text-zinc-500 tabular-nums">₹{(product.costPrice || 0).toFixed(2)}</td>
+                                        <td className="px-5 py-4 text-right font-mono text-xs text-zinc-900 tabular-nums">₹{(product.sellingPrice || 0).toFixed(2)}</td>
+                                        <td className="px-5 py-4 text-center">
+                                            <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-zinc-50 border border-zinc-100">
+                                                <span className={`h-2 w-2 rounded-full ${product.stockQuantity <= 10 ? 'bg-red-600' : 'bg-emerald-600'}`} />
+                                                <span className="font-mono text-xs text-zinc-700 tabular-nums">{product.stockQuantity}</span>
+                                            </div>
+                                        </td>
+                                        <td className="px-5 py-4 text-right">
+                                            <div className="flex justify-end gap-3">
+                                                <button onClick={() => handleEdit(product)} className="p-1.5 text-zinc-500 hover:text-zinc-900 hover:bg-zinc-50 rounded-md transition-colors">
+                                                    <Edit size={14} />
+                                                </button>
+                                                <button onClick={() => handleDelete(product.id, product.name)} className="p-1.5 text-zinc-500 hover:text-red-700 hover:bg-red-50 rounded-md transition-colors">
+                                                    <Trash2 size={14} />
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                ))
+                            )}
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
             {/* Mount the Modal here */}
-            <ProductModal
-                isOpen={isModalOpen}
-                onClose={() => setIsModalOpen(false)}
-                productToEdit={productToEdit}
-            />
+            <ProductModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} productToEdit={productToEdit} />
         </div>
     );
 }

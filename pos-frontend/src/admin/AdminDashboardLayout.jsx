@@ -1,78 +1,65 @@
-import { useState } from 'react';
-import { Outlet, Link, useLocation } from 'react-router-dom';
-import { LayoutDashboard, Boxes, Users, LogOut, Menu, X, ShieldAlert } from 'lucide-react';
+import { Outlet, NavLink, useNavigate } from 'react-router-dom';
+import { LayoutDashboard, Boxes, Users, LogOut } from 'lucide-react';
+import { StoreOSLogo } from '../components/StoreOSLogo';
 
 export default function AdminDashboardLayout() {
-    const location = useLocation();
-    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const navigate = useNavigate();
 
-    const adminNavItems = [
-        { path: "/admin", icon: LayoutDashboard, label: "Overview Panel" },
-        { path: "/admin/inventory", icon: Boxes, label: "Stock Control" },
-        { path: "/admin/employees", icon: Users, label: "Staff Roster" }
-    ];
+  const adminNavItems = [
+    { to: '/admin', icon: LayoutDashboard, label: 'Console' },
+    { to: '/admin/inventory', icon: Boxes, label: 'Stock Ledger' },
+    { to: '/admin/employees', icon: Users, label: 'Staff Roster' },
+  ];
 
-    const handleLogout = () => {
-        localStorage.removeItem('JWT');
-        window.location.href = '/login';
-    };
+  const handleLogout = () => {
+    localStorage.removeItem('JWT');
+    navigate('/login');
+  };
 
-    return (
-        <div className="flex h-screen w-screen overflow-hidden bg-slate-50 dark:bg-zinc-950">
+  return (
+    <div className="min-h-screen flex bg-[#FAFAFA] text-zinc-900 font-sans">
+      {/* Left navigation column (master) */}
+      <aside className="w-20 border-r border-zinc-200 bg-[#FAFAF9] flex flex-col items-center py-6 gap-6">
+        {adminNavItems.map((item) => (
+          <NavLink
+            to={item.to}
+            key={item.to}
+            className={({ isActive }) =>
+              `flex h-10 w-10 items-center justify-center rounded-lg transition-all ${
+                isActive ? 'bg-zinc-900 text-white shadow-sm' : 'text-zinc-500 hover:bg-zinc-50'
+              }`
+            }
+            title={item.label}
+          >
+            <item.icon size={16} />
+          </NavLink>
+        ))}
 
-            {/* Desktop Static Sidebar Panel */}
-            <aside className="hidden md:flex flex-col w-64 bg-zinc-900 text-zinc-100 border-r border-zinc-800 p-4 justify-between">
-                <div className="space-y-6">
-                    <div className="flex items-center gap-2 px-2 py-4 border-b border-zinc-800">
-                        <ShieldAlert className="h-6 w-6 text-primary" />
-                        <span className="font-black tracking-tight text-lg">Admin Workspace</span>
-                    </div>
-                    <nav className="space-y-1">
-                        {adminNavItems.map((item) => {
-                            const isActive = location.pathname === item.path;
-                            return (
-                                <Link
-                                    key={item.path}
-                                    to={item.path}
-                                    className={`flex items-center gap-3 px-3 py-3 rounded-lg text-sm font-medium transition-colors ${
-                                        isActive ? 'bg-primary text-primary-foreground' : 'text-zinc-400 hover:bg-zinc-800 hover:text-zinc-100'
-                                    }`}
-                                >
-                                    <item.icon size={18} />
-                                    <span>{item.label}</span>
-                                </Link>
-                            );
-                        })}
-                    </nav>
-                </div>
-                <button
-                    onClick={handleLogout}
-                    className="flex items-center gap-3 px-3 py-3 rounded-lg text-sm font-medium text-zinc-400 hover:bg-destructive/10 hover:text-destructive transition-colors w-full"
-                >
-                    <LogOut size={18} />
-                    <span>Exit Panel</span>
-                </button>
-            </aside>
+        <div className="mt-auto" />
+        <button onClick={handleLogout} title="Logout" className="flex h-10 w-10 items-center justify-center rounded-lg text-zinc-500 hover:bg-zinc-50">
+          <LogOut size={16} />
+        </button>
+      </aside>
 
-            {/* Main Operational Container */}
-            <div className="flex flex-1 flex-col overflow-hidden">
+      {/* Main content area (detail) */}
+      <div className="flex-1">
+        <header className="h-16 flex items-center justify-between px-8 border-b border-zinc-200 bg-white">
+          <div className="flex items-center gap-4">
+            <StoreOSLogo className="w-8 h-8" />
+            <div className="text-sm font-medium tracking-tight">Store OS</div>
+            <div className="text-xs text-zinc-500">Operations Console</div>
+          </div>
+          <div className="flex items-center gap-4 text-sm">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-white border border-zinc-200 text-xs text-zinc-500">PCI DSS</div>
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-white border border-zinc-200 text-xs text-zinc-500">SOC 2</div>
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-white border border-zinc-200 text-xs text-zinc-500">SLA 99.9%</div>
+          </div>
+        </header>
 
-                {/* Mobile Navigation Header Row Bar */}
-                <header className="flex md:hidden h-16 bg-card border-b px-6 items-center justify-between">
-                    <div className="flex items-center gap-2">
-                        <ShieldAlert className="h-5 w-5 text-primary" />
-                        <span className="font-bold text-sm">POS Manager</span>
-                    </div>
-                    <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="p-1.5 hover:bg-secondary rounded-md">
-                        {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
-                    </button>
-                </header>
-
-                {/* Main Dynamic Viewport Injection Window */}
-                <main className="flex-1 overflow-x-hidden overflow-y-auto p-6">
-                    <Outlet />
-                </main>
-            </div>
-        </div>
-    );
+        <main className="p-8 md:p-12">
+          <Outlet />
+        </main>
+      </div>
+    </div>
+  );
 }

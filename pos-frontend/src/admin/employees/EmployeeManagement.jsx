@@ -1,10 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Plus, Trash2, UserCircle } from 'lucide-react';
+import { Plus, Trash2 } from 'lucide-react';
 import { fetchEmployeesByBranch, deleteEmployee } from '../../redux/features/employee/employeeThunk';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../../components/ui/table';
-import { Button } from '../../components/ui/button';
-import EmployeeModal from './EmployeeModal'; // We will build this brief modal next
+import EmployeeModal from './EmployeeModal';
 
 export default function EmployeeManagement() {
     const dispatch = useDispatch();
@@ -14,9 +12,8 @@ export default function EmployeeManagement() {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     useEffect(() => {
-        if (user?.branchId) {
-            dispatch(fetchEmployeesByBranch(user.branchId));
-        }
+        const branchId = user?.branchId || 1;
+        dispatch(fetchEmployeesByBranch(branchId));
     }, [dispatch, user]);
 
     const handleDelete = (employeeId, name) => {
@@ -30,57 +27,64 @@ export default function EmployeeManagement() {
     };
 
     return (
-        <div className="space-y-6">
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div className="space-y-8">
+            {/* Header */}
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-6">
                 <div>
-                    <h1 className="text-2xl font-bold tracking-tight">Staff Roster</h1>
-                    <p className="text-sm text-muted-foreground">Manage cashier accounts and terminal access.</p>
+                    <h1 className="text-2xl font-semibold tracking-tight text-zinc-900">Staff Roster</h1>
+                    <p className="text-[10px] uppercase tracking-wider text-zinc-500 mt-1">Terminal Credentials & Access</p>
                 </div>
-                <Button onClick={() => setIsModalOpen(true)} className="shadow-md">
-                    <Plus className="mr-2 h-4 w-4" /> Add New Employee
-                </Button>
+                <div>
+                    <button onClick={() => setIsModalOpen(true)} className="inline-flex items-center gap-2 px-4 py-2 bg-zinc-900 text-white rounded-lg text-sm font-medium shadow-md transition-all">
+                        <Plus size={14} /> Add Employee
+                    </button>
+                </div>
             </div>
 
-            <div className="bg-card border border-border rounded-xl shadow-sm overflow-hidden">
-                <Table>
-                    <TableHeader>
-                        <TableRow>
-                            <TableHead>Employee Name</TableHead>
-                            <TableHead>Email Address</TableHead>
-                            <TableHead>Phone</TableHead>
-                            <TableHead>System Role</TableHead>
-                            <TableHead className="text-right">Actions</TableHead>
-                        </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                        {loading ? (
-                            <TableRow><TableCell colSpan={5} className="text-center py-10">Loading staff data...</TableCell></TableRow>
-                        ) : employees.length === 0 ? (
-                            <TableRow><TableCell colSpan={5} className="text-center py-10 text-muted-foreground">No employees found.</TableCell></TableRow>
-                        ) : (
-                            employees.map((emp) => (
-                                <TableRow key={emp.id}>
-                                    <TableCell className="font-medium flex items-center gap-2">
-                                        <UserCircle className="h-5 w-5 text-muted-foreground" />
-                                        {emp.firstName} {emp.lastName}
-                                    </TableCell>
-                                    <TableCell>{emp.email}</TableCell>
-                                    <TableCell>{emp.phoneNumber || 'N/A'}</TableCell>
-                                    <TableCell>
-                                        <span className={`px-2.5 py-1 text-xs font-bold rounded-md ${emp.role === 'STORE_OWNER' ? 'bg-primary/10 text-primary' : 'bg-secondary text-secondary-foreground'}`}>
-                                            {emp.role.replace('_', ' ')}
-                                        </span>
-                                    </TableCell>
-                                    <TableCell className="text-right">
-                                        <Button variant="ghost" size="icon" className="text-destructive hover:bg-destructive/10" onClick={() => handleDelete(emp.id, emp.firstName)}>
-                                            <Trash2 className="h-4 w-4" />
-                                        </Button>
-                                    </TableCell>
-                                </TableRow>
-                            ))
-                        )}
-                    </TableBody>
-                </Table>
+            {/* Roster Table */}
+            <div className="w-full bg-white border border-zinc-200 rounded-xl overflow-hidden shadow-sm">
+                <div className="overflow-x-auto">
+                    <table className="w-full text-left text-sm">
+                        <thead className="bg-zinc-50 border-b border-zinc-200 text-xs text-zinc-500 uppercase tracking-wider">
+                            <tr>
+                                <th className="px-5 py-3">Employee Name</th>
+                                <th className="px-5 py-3">Email Address</th>
+                                <th className="px-5 py-3">Phone</th>
+                                <th className="px-5 py-3">System Role</th>
+                                <th className="px-5 py-3 text-right">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody className="divide-y divide-zinc-100">
+                            {loading ? (
+                                <tr>
+                                    <td colSpan={5} className="py-12 text-center text-sm text-zinc-500">Loading staff ledger...</td>
+                                </tr>
+                            ) : employees.length === 0 ? (
+                                <tr>
+                                    <td colSpan={5} className="py-12 text-center text-sm text-zinc-500">No active staff accounts registered.</td>
+                                </tr>
+                            ) : (
+                                employees.map((emp) => (
+                                    <tr key={emp.id} className="hover:bg-zinc-50 transition-colors">
+                                        <td className="px-5 py-4 text-zinc-900">{emp.fullName}</td>
+                                        <td className="px-5 py-4 text-zinc-500">{emp.email}</td>
+                                        <td className="px-5 py-4 font-mono text-zinc-500 tabular-nums">{emp.phone || '—'}</td>
+                                        <td className="px-5 py-4">
+                                            <span className="inline-block px-2 py-1 text-[10px] uppercase tracking-wider font-medium bg-zinc-50 border border-zinc-100 rounded-md text-zinc-500">
+                                                {(emp.role || '').replace('ROLE_', '').replace('_', ' ')}
+                                            </span>
+                                        </td>
+                                        <td className="px-5 py-4 text-right">
+                                            <button onClick={() => handleDelete(emp.id, emp.fullName)} className="p-1.5 text-zinc-500 hover:text-red-700 hover:bg-red-50 rounded-md transition-colors">
+                                                <Trash2 size={14} />
+                                            </button>
+                                        </td>
+                                    </tr>
+                                ))
+                            )}
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
             <EmployeeModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />

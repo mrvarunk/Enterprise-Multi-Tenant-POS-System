@@ -16,8 +16,8 @@ export default function OrderDetailsModal({ order, isOpen, onClose }) {
             <DialogContent className="max-w-2xl max-h-[85vh] overflow-y-auto">
                 <DialogHeader>
                     <div className="flex items-center gap-2">
-                        <div className="p-2 bg-primary/10 text-primary rounded-full">
-                            <Receipt className="h-5 w-5" />
+                                <div className="p-2 bg-zinc-50 text-zinc-500 rounded-full">
+                                    <Receipt className="h-5 w-5" />
                         </div>
                         <div>
                             <DialogTitle>Receipt #{order.id}</DialogTitle>
@@ -31,17 +31,17 @@ export default function OrderDetailsModal({ order, isOpen, onClose }) {
                 <div className="mt-4 space-y-6">
                     {/* Financial Summary Cards */}
                     <div className="grid grid-cols-3 gap-4">
-                        <div className="p-4 bg-secondary/30 rounded-xl border border-border">
-                            <p className="text-sm text-muted-foreground mb-1">Payment Method</p>
-                            <p className="font-bold">{order.paymentType}</p>
+                        <div className="p-4 bg-white rounded-xl border border-zinc-100">
+                            <p className="text-sm text-zinc-500 mb-1">Payment Method</p>
+                            <p className="font-semibold text-zinc-900">{order.paymentType}</p>
                         </div>
-                        <div className="p-4 bg-secondary/30 rounded-xl border border-border">
-                            <p className="text-sm text-muted-foreground mb-1">Cashier ID</p>
-                            <p className="font-bold">{order.cashierId}</p>
+                        <div className="p-4 bg-white rounded-xl border border-zinc-100">
+                            <p className="text-sm text-zinc-500 mb-1">Cashier ID</p>
+                            <p className="font-semibold text-zinc-900 tabular-nums">{order.cashierId}</p>
                         </div>
-                        <div className="p-4 bg-primary/5 border border-primary/20 rounded-xl">
-                            <p className="text-sm text-primary font-medium mb-1">Total Paid</p>
-                            <p className="font-bold text-xl text-primary">₹{order.totalAmount.toFixed(2)}</p>
+                        <div className="p-4 bg-zinc-50 border border-zinc-100 rounded-xl">
+                            <p className="text-sm text-zinc-700 font-medium mb-1">Total Paid</p>
+                            <p className="font-semibold text-xl text-zinc-900 tabular-nums">₹{order.totalAmount.toFixed(2)}</p>
                         </div>
                     </div>
 
@@ -75,9 +75,9 @@ export default function OrderDetailsModal({ order, isOpen, onClose }) {
                     </div>
 
                     {/* Print Button Placeholder */}
-                    <div className="flex justify-end pt-4 border-t border-border">
+                        <div className="flex justify-end pt-4 border-t border-zinc-100">
                         <button
-                            className="px-6 py-2 bg-primary text-primary-foreground rounded-lg font-medium hover:bg-primary/90 transition-colors"
+                            className="px-4 py-2 bg-zinc-900 text-white rounded-lg font-medium hover:bg-zinc-800 transition-colors"
                             onClick={() => window.print()}
                         >
                             Print Copy

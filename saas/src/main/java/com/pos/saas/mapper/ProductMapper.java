@@ -35,7 +35,9 @@ public class ProductMapper {
     }
 
     public static Product toEntity(ProductDTO dto, Store store) {
+        if (dto == null) return null;
         return Product.builder()
+                .id(dto.getId())
                 .name(dto.getName())
                 .barcode(dto.getBarcode())
                 .description(dto.getDescription())
@@ -43,6 +45,7 @@ public class ProductMapper {
                 .mrp(dto.getMrp())
                 .sellingPrice(dto.getSellingPrice())
                 .brand(dto.getBrand())
+                .image(dto.getImage())
                 .stockQuantity(dto.getStockQuantity())
                 .store(store)
                 .build();

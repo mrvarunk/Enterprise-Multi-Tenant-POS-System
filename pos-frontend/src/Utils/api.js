@@ -9,7 +9,7 @@ const api = axios.create({
     }
 });
 
-// 2. Request Interceptor: Automatically injects the JWT token before the request leaves
+// 2. Request Interceptor: Automatically injects JWT token and prevents aggressive browser caching
 api.interceptors.request.use(
     (config) => {
         const token = localStorage.getItem('JWT');
@@ -17,6 +17,19 @@ api.interceptors.request.use(
         if (token) {
             // Attaches the token in the strict 'Bearer <token>' format expected by Spring Security
             config.headers['Authorization'] = `Bearer ${token}`;
+        }
+
+        // Add cache-control headers
+        config.headers['Cache-Control'] = 'no-cache';
+        config.headers['Pragma'] = 'no-cache';
+        config.headers['Expires'] = '0';
+
+        // Add cache-buster to all GET requests to prevent aggressive browser caching
+        if (config.method === 'get') {
+            config.params = {
+                ...config.params,
+                _cb: new Date().getTime()
+            };
         }
 
         return config;
@@ -36,6 +49,7 @@ api.interceptors.response.use(
 
             // Clean up the dead session
             localStorage.removeItem('JWT');
+            localStorage.removeItem('USER');
 
             // Force boot the user back to the login screen securely if they aren't already there
             if (window.location.pathname !== '/login') {

@@ -2,14 +2,14 @@ import * as React from "react"
 import { cn } from "../../lib/utils"
 
 const Table = React.forwardRef(({ className, ...props }, ref) => (
-    <div className="relative w-full overflow-auto rounded-xl border border-border bg-card">
+    <div className="relative w-full overflow-auto rounded-xl border border-zinc-200 bg-white">
         <table ref={ref} className={cn("w-full caption-bottom text-sm", className)} {...props} />
     </div>
 ))
 Table.displayName = "Table"
 
 const TableHeader = React.forwardRef(({ className, ...props }, ref) => (
-    <thead ref={ref} className={cn("[&_tr]:border-b bg-secondary/30", className)} {...props} />
+    <thead ref={ref} className={cn("[&_tr]:border-b bg-zinc-50", className)} {...props} />
 ))
 TableHeader.displayName = "TableHeader"
 
@@ -27,7 +27,7 @@ const TableRow = React.forwardRef(({ className, ...props }, ref) => (
     <tr
         ref={ref}
         className={cn(
-            "border-b border-border/60 transition-colors hover:bg-muted/40 data-[state=selected]:bg-muted select-none",
+            "border-b border-zinc-100 transition-colors hover:bg-zinc-50 select-none",
             className
         )}
         {...props}
@@ -39,7 +39,7 @@ const TableHead = React.forwardRef(({ className, ...props }, ref) => (
     <th
         ref={ref}
         className={cn(
-            "h-12 px-4 text-left align-middle font-semibold text-muted-foreground [&:has([role=checkbox])]:pr-0",
+            "h-12 px-4 text-left align-middle font-semibold text-zinc-500 [&:has([role=checkbox])]:pr-0",
             className
         )}
         {...props}
@@ -48,7 +48,7 @@ const TableHead = React.forwardRef(({ className, ...props }, ref) => (
 TableHead.displayName = "TableHead"
 
 const TableCell = React.forwardRef(({ className, ...props }, ref) => (
-    <td ref={ref} className={cn("p-4 align-middle [&:has([role=checkbox])]:pr-0 text-foreground", className)} {...props} />
+    <td ref={ref} className={cn("p-4 align-middle [&:has([role=checkbox])]:pr-0 text-zinc-900", className)} {...props} />
 ))
 TableCell.displayName = "TableCell"
 

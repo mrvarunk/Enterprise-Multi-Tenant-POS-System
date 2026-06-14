@@ -17,7 +17,8 @@ export const createEmployee = createAsyncThunk(
     'employee/create',
     async (employeeData, { rejectWithValue }) => {
         try {
-            const response = await api.post('/api/employees', employeeData);
+            const branchId = employeeData.branchId || 1;
+            const response = await api.post(`/api/employees/branch/${branchId}`, employeeData);
             return response.data;
         } catch (error) {
             return rejectWithValue(error.response?.data?.message || "Failed to create employee account.");

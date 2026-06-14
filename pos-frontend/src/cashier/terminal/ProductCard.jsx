@@ -6,7 +6,6 @@ export default function ProductCard({ product }) {
     const dispatch = useDispatch();
 
     const handleAddToCart = () => {
-        // Prevent adding out-of-stock items
         if (product.stockQuantity > 0) {
             dispatch(addToCart(product));
         }
@@ -17,37 +16,40 @@ export default function ProductCard({ product }) {
     return (
         <div
             onClick={handleAddToCart}
-            className={`relative flex flex-col p-4 border rounded-xl transition-all select-none
+            className={`relative flex flex-col transition-all duration-200 select-none group h-60 overflow-hidden rounded-lg shadow-sm
                 ${isOutOfStock
-                ? 'opacity-50 cursor-not-allowed bg-secondary/20 border-border'
-                : 'cursor-pointer hover:border-primary hover:shadow-md bg-card border-border'
+                ? 'opacity-50 cursor-not-allowed bg-zinc-50 border border-zinc-200'
+                : 'cursor-pointer hover:border-zinc-300 hover:shadow-md bg-white border border-zinc-200'
             }`}
         >
-            {/* Product Image Placeholder */}
-            <div className="flex h-24 w-full items-center justify-center rounded-lg bg-secondary/50 mb-3">
-                {product.imageUrl ? (
-                    <img src={product.imageUrl} alt={product.name} className="h-full w-full object-cover rounded-lg" />
+            <div className="h-[55%] w-full bg-zinc-50 border-b border-zinc-100 overflow-hidden">
+                {(product.image || product.imageUrl) ? (
+                    <img src={product.image || product.imageUrl} alt={product.name} className="h-full w-full object-cover transition-transform group-hover:scale-102" />
                 ) : (
-                    <Package className="h-10 w-10 text-muted-foreground opacity-50" />
+                    <div className="h-full w-full flex items-center justify-center">
+                        <Package className="h-8 w-8 text-zinc-300" />
+                    </div>
                 )}
             </div>
 
             {/* Product Details */}
-            <div className="flex-1 space-y-1">
-                <h3 className="font-semibold text-sm line-clamp-2 leading-tight">{product.name}</h3>
-                <p className="text-xs text-muted-foreground line-clamp-1">{product.barcode}</p>
-            </div>
+            <div className="flex flex-col flex-1 p-3 justify-between">
+                <div>
+                    <h3 className="font-semibold text-sm line-clamp-2 leading-tight text-zinc-900">{product.name}</h3>
+                    <p className="text-[11px] text-zinc-500 mt-0.5">{product.barcode}</p>
+                </div>
 
-            {/* Price and Stock Layout */}
-            <div className="flex items-center justify-between mt-3 pt-3 border-t border-border/50">
-                <span className="font-bold text-base tracking-tight">₹{product.sellingPrice.toFixed(2)}</span>
-                <span className={`text-xs font-medium px-2 py-1 rounded-md ${
-                    isOutOfStock
-                        ? 'bg-destructive/10 text-destructive'
-                        : 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400'
-                }`}>
-                    {isOutOfStock ? 'Out of Stock' : `${product.stockQuantity} in stock`}
-                </span>
+                {/* Price and Stock Layout */}
+                <div className="flex items-end justify-between mt-2">
+                    <span className="font-bold text-base tracking-tight tabular-nums text-zinc-900">₹{(product.sellingPrice || 0).toFixed(2)}</span>
+                    <span className={`text-[11px] font-medium ${
+                        isOutOfStock
+                            ? 'text-red-500'
+                            : 'text-zinc-500'
+                    }`}>
+                        {isOutOfStock ? 'Out of Stock' : `${product.stockQuantity} in stock`}
+                    </span>
+                </div>
             </div>
         </div>
     );

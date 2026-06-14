@@ -10,6 +10,7 @@ import com.pos.saas.payload.response.AuthResponse;
 import com.pos.saas.repository.UserRepository;
 import com.pos.saas.service.AuthService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -26,12 +27,11 @@ public class AuthServiceImpl implements AuthService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtProvider jwtProvider;
-    private final com.pos.saas.service.impl.CustomUserServiceImpl customUserService;
+    private final CustomUserServiceImpl customUserService; // Cleaned up redundant package prefix
 
     @Override
     public AuthResponse signup(UserDTO userDto) throws UserException {
-        User existingUser = userRepository.findByEmail(userDto.getEmail());
-        if (existingUser != null) {
+        if (userRepository.findByEmail(userDto.getEmail()) != null) {
             throw new UserException("Email ID already registered.");
         }
 
@@ -50,7 +50,8 @@ public class AuthServiceImpl implements AuthService {
 
         User savedUser = userRepository.save(newUser);
 
-        Authentication authentication = new UsernamePasswordAuthenticationToken(savedUser.getEmail(), savedUser.getPassword());
+        // Authenticate properly using the custom user service details
+        Authentication authentication = authenticate(userDto.getEmail(), userDto.getPassword());
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         String jwt = jwtProvider.generateToken(authentication);
@@ -65,6 +66,7 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public AuthResponse login(UserDTO userDto) throws UserException {
+        // FIX: Actually invoke the credential verification logic
         Authentication authentication = authenticate(userDto.getEmail(), userDto.getPassword());
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
@@ -84,12 +86,16 @@ public class AuthServiceImpl implements AuthService {
 
     private Authentication authenticate(String email, String password) throws UserException {
         UserDetails userDetails = customUserService.loadUserByUsername(email);
+
         if (userDetails == null) {
-            throw new UserException("Email ID doesn't exist");
+            throw new UserException("Invalid email or password");
         }
+
         if (!passwordEncoder.matches(password, userDetails.getPassword())) {
-            throw new UserException("Password doesn't match");
+            throw new UserException("Invalid email or password");
         }
+
+        // Pass userDetails and authorities instead of credentials string
         return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
     }
 }

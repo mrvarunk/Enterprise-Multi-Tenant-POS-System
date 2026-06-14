@@ -38,8 +38,8 @@ public class SecurityConfig {
             @Override
             public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
                 CorsConfiguration cfg = new CorsConfiguration();
-                // Allow Vite default port (5173), standard React port (3000), and Backend (5000)
-                cfg.setAllowedOrigins(List.of("http://localhost:5173", "http://localhost:3000", "http://localhost:5000"));
+                // Allow any localhost development port dynamically to prevent CORS preflight blocks
+                cfg.setAllowedOriginPatterns(List.of("http://localhost:*", "http://127.0.0.1:*"));
                 // Explicitly allow all standard HTTP methods
                 cfg.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
                 cfg.setAllowCredentials(true);
