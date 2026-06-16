@@ -5,16 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c3806633-023a-4aab-b243-4cd53808c2bb" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/saas/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/data_sources_history.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/data_sources_history.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DASHBOARD_FIX_SUMMARY.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/IDOR_CODE_PATTERNS_REFERENCE.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/IDOR_COMPLETION_SUMMARY.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/IDOR_SECURITY_IMPLEMENTATION.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/IDOR_VERIFICATION_REPORT.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/README_IDOR_IMPLEMENTATION.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/saas/src/main/java/com/pos/saas/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/saas/src/main/java/com/pos/saas/config/SecurityConfig.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/saas/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/saas/src/main/resources/application.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -45,10 +36,10 @@
     <commands />
     <urls />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 6,
-  "fromUser": false
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 6,
+  &quot;fromUser&quot;: false
+}</component>
   <component name="ProjectId" id="3FDGASJ3HuIExVZG3AJtHAWvNdF" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -58,8 +49,8 @@
   "keyToString": {
     "RequestMappingsPanelOrder0": "0",
     "RequestMappingsPanelOrder1": "1",
-    "RequestMappingsPanelWidth0": "700",
-    "RequestMappingsPanelWidth1": "699",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
     "RunOnceActivity.MCP Project settings loaded": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
@@ -68,7 +59,7 @@
     "Spring Boot.SaasApplication.executor": "Run",
     "codeWithMe.voiceChat.enabledByDefault": "false",
     "dart.analysis.tool.window.visible": "false",
-    "git-widget-placeholder": "caching",
+    "git-widget-placeholder": "main",
     "kotlin-language-version-configured": "true",
     "node.js.detected.package.eslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
