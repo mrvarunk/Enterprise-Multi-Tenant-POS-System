@@ -39,8 +39,7 @@ public class SecurityConfig {
             public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
                 CorsConfiguration cfg = new CorsConfiguration();
                 // Allow any localhost development port dynamically to prevent CORS preflight blocks
-                cfg.setAllowedOriginPatterns(List.of("http://localhost:*", "http://127.0.0.1:*"));
-                // Explicitly allow all standard HTTP methods
+                cfg.setAllowedOriginPatterns(Collections.singletonList("*")); // Change localhost to *                // Explicitly allow all standard HTTP methods
                 cfg.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
                 cfg.setAllowCredentials(true);
                 cfg.setAllowedHeaders(Collections.singletonList("*"));
