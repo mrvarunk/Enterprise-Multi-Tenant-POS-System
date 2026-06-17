@@ -2,7 +2,7 @@ import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { logout } from '../redux/features/auth/authSlice';
 import { LayoutDashboard, ShoppingCart, Clock, RotateCcw, Receipt, LogOut, LayoutGrid } from 'lucide-react';
-import React, { useState } from 'react';
+
 import { StoreOSLogo } from '../components/StoreOSLogo';
 
 export default function CashierDashboardLayout() {

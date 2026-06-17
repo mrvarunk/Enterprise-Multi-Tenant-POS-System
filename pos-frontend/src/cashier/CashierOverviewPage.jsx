@@ -1,4 +1,4 @@
-import React from "react";
+
 import { useNavigate } from "react-router-dom";
 import {
   Play,
@@ -9,9 +9,7 @@ import {
   AlertCircle,
   Printer,
   LogOut,
-  CreditCard,
   Banknote,
-  ScanLine,
 } from "lucide-react";
 
 export default function CashierOverview() {
@@ -45,18 +43,7 @@ export default function CashierOverview() {
     },
   ];
 
-  const getMethodIcon = (method) => {
-    switch (method) {
-      case "UPI":
-        return <ScanLine size={14} className="text-zinc-400" />;
-      case "Card":
-        return <CreditCard size={14} className="text-zinc-400" />;
-      case "Cash":
-        return <Banknote size={14} className="text-zinc-400" />;
-      default:
-        return null;
-    }
-  };
+
 
   return (
     <div className="min-h-screen bg-[#FAFAFA] text-zinc-900 font-sans p-4 sm:p-8">

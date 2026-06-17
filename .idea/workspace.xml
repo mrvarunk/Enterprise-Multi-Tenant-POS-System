@@ -6,6 +6,16 @@
   <component name="ChangeListManager">
     <list default="true" id="c3806633-023a-4aab-b243-4cd53808c2bb" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pos-frontend/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pos-frontend/src/admin/AdminOverviewPage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/pos-frontend/src/admin/AdminOverviewPage.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pos-frontend/src/cashier/CashierDashboardLayout.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/pos-frontend/src/cashier/CashierDashboardLayout.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pos-frontend/src/cashier/CashierOverviewPage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/pos-frontend/src/cashier/CashierOverviewPage.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pos-frontend/src/cashier/POSHeader.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/pos-frontend/src/cashier/POSHeader.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pos-frontend/src/cashier/Sidebar.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/pos-frontend/src/cashier/Sidebar.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pos-frontend/src/cashier/terminal/CheckoutModal.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/pos-frontend/src/cashier/terminal/CheckoutModal.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pos-frontend/src/components/StoreOSLogo.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/pos-frontend/src/components/StoreOSLogo.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pos-frontend/src/pages/auth/Login.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/pos-frontend/src/pages/auth/Login.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/saas/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/saas/.gitignore" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -18,7 +28,7 @@
     </persistenceIdMap>
   </component>
   <component name="EmbeddingIndexingInfo">
-    <option name="cachedIndexableFilesCount" value="201" />
+    <option name="cachedIndexableFilesCount" value="199" />
     <option name="fileBasedEmbeddingIndicesEnabled" value="true" />
   </component>
   <component name="FileTemplateManagerImpl">
@@ -65,6 +75,7 @@
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
     "settings.editor.selected.configurable": "preferences.keymap",
+    "ts.external.directory.path": "C:\\Program Files\\JetBrains\\IntelliJ IDEA 2026.1\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>

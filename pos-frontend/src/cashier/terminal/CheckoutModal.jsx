@@ -27,7 +27,9 @@ export default function CheckoutModal({ isOpen, onClose }) {
     const [isSuccess, setIsSuccess] = useState(false);
 
     // Sync tendered amount when modal opens or total updates
+    // Sync tendered amount when modal opens or total updates
     useEffect(() => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setAmountTendered(totalAmount.toString());
     }, [isOpen, totalAmount]);
 

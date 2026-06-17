@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { TrendingUp, Sparkles, Clock } from 'lucide-react';
+
 import { getOrdersByBranch } from "../redux/features/order/orderThunk";
 import { fetchProductsByStore } from "../redux/features/product/productThunk";
 
@@ -25,7 +25,7 @@ export default function AdminOverviewPage() {
     // Calculations
     const totalRevenue = orders.reduce((sum, order) => sum + order.totalAmount, 0);
     const totalTransactions = orders.length;
-    const uniqueCashiersCount = new Set(orders.map(order => order.cashierId)).size || 1;
+
     const lowStockItems = products.filter(product => product.stockQuantity <= 10);
     const lowStockCount = lowStockItems.length;
 
@@ -77,35 +77,10 @@ export default function AdminOverviewPage() {
         return { data: salesByDay, labels };
     };
 
-    const { data: weeklyData, labels: weeklyLabels } = getWeeklySales();
-    const maxVal = Math.max(...weeklyData, 1000);
+    const { data: weeklyData } = getWeeklySales();
 
-    // Generate SVG path for Bezier Spline (width: 500, height: 120)
-    const generateSplinePath = () => {
-        const points = weeklyData.map((val, idx) => {
-            const x = (idx / 6) * 500;
-            const y = 110 - (val / maxVal) * 90;
-            return { x, y };
-        });
 
-        if (points.length === 0) return { line: "", area: "" };
 
-        let linePath = `M ${points[0].x} ${points[0].y}`;
-        for (let i = 0; i < points.length - 1; i++) {
-            const curr = points[i];
-            const next = points[i + 1];
-            const cpX1 = curr.x + (next.x - curr.x) / 2;
-            const cpY1 = curr.y;
-            const cpX2 = curr.x + (next.x - curr.x) / 2;
-            const cpY2 = next.y;
-            linePath += ` C ${cpX1} ${cpY1}, ${cpX2} ${cpY2}, ${next.x} ${next.y}`;
-        }
-
-        const areaPath = `${linePath} L 500 120 L 0 120 Z`;
-        return { line: linePath, area: areaPath };
-    };
-
-    const splinePaths = generateSplinePath();
 
     // Fallback/mock values for small widgets so the page doesn't crash when
     // there is no backend data during development. These are safe defaults
@@ -245,7 +220,7 @@ export default function AdminOverviewPage() {
                             {staffList.length === 0 ? (
                                 <div className="text-sm text-zinc-500">No staff activity logged.</div>
                             ) : (
-                                staffList.map((staff, idx) => (
+                                staffList.map((staff) => (
                                     <div key={staff.id} className="flex items-center justify-between">
                                         <div className="text-sm text-zinc-900">{staff.name}</div>
                                         <div className="font-mono tabular-nums">₹{staff.sales.toLocaleString('en-IN', { maximumFractionDigits: 0 })}</div>
