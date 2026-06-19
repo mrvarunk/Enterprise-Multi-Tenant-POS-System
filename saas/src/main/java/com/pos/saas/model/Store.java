@@ -31,6 +31,7 @@ public class Store {
     private StoreStatus status;
 
     @Embedded
+    @Builder.Default
     private StoreContact contact = new StoreContact();
 
     @PrePersist

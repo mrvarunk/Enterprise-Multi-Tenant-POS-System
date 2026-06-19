@@ -16,6 +16,7 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -106,6 +107,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     @Cacheable(value = "productsByStore", keyGenerator = "tenantAwareKeyGenerator")
     public List<ProductDTO> getProductsByStoreId(Long storeId) {
         List<Product> products = productRepository.findByStoreId(storeId);
@@ -113,6 +115,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<ProductDTO> searchProduct(String keyword, Long storeId) {
         List<Product> products = productRepository.searchProduct(keyword, storeId);
         return products.stream().map(ProductMapper::toDTO).collect(Collectors.toList());

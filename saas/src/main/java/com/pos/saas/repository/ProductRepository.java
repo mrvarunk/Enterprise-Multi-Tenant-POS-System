@@ -21,4 +21,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             "LOWER(p.brand) LIKE LOWER(CONCAT('%', :keyword, '%')) OR " +
             "LOWER(p.barcode) LIKE LOWER(CONCAT('%', :keyword, '%')))")
     List<Product> searchProduct(@Param("keyword") String keyword, @Param("storeId") Long storeId);
+
+    Optional<Product> findByBarcode(String barcode);
 }

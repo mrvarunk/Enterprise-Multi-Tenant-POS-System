@@ -3,11 +3,14 @@ package com.pos.saas.dto;
 import lombok.Builder;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Data
 @Builder
-public class ProductDTO {
+public class ProductDTO implements Serializable {
+    private static final long serialVersionUID = 1L;
+    
     private Long id;
     private String name;
     private String barcode;
@@ -26,7 +29,8 @@ public class ProductDTO {
 
     @Data
     @Builder
-    public static class CategoryDTO {
+    public static class CategoryDTO implements Serializable {
+        private static final long serialVersionUID = 1L;
         private Long id;
         private String name;
     }
