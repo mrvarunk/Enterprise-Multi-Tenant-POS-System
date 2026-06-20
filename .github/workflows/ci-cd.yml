@@ -1,0 +1,72 @@
+name: Enterprise POS CI/CD Pipeline
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+
+jobs:
+  # -----------------------------------
+  # JOB 1: Test & Build the Backend
+  # -----------------------------------
+  build-backend:
+    name: Build Spring Boot Backend
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./saas 
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    - name: Set up JDK 17
+      uses: actions/setup-java@v3
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        cache: 'maven'
+
+    - name: Compile and Build
+      run: mvn clean package -DskipTests 
+
+  # -----------------------------------
+  # JOB 2: Test & Build the Frontend
+  # -----------------------------------
+  build-frontend:
+    name: Build React Frontend
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./pos-frontend 
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+        cache: 'npm'
+        cache-dependency-path: './pos-frontend/package-lock.json'
+
+    - name: Install Dependencies
+      run: npm install
+
+    - name: Build Vite App
+      run: npm run build
+
+  # -----------------------------------
+  # JOB 3: Continuous Deployment (CD)
+  # -----------------------------------
+  deploy-backend:
+    name: Deploy to Render
+    needs: build-backend 
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' 
+
+    steps:
+    - name: Trigger Render Deployment
+      run: curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK_URL }}

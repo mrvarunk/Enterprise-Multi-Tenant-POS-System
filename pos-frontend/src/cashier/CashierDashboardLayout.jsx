@@ -1,7 +1,7 @@
 import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { logout } from '../redux/features/auth/authSlice';
-import { LayoutDashboard, ShoppingCart, Clock, RotateCcw, Receipt, LogOut, LayoutGrid } from 'lucide-react';
+import { LayoutDashboard, ShoppingCart, Clock, RotateCcw, Receipt, LogOut } from 'lucide-react';
 
 import { StoreOSLogo } from '../components/StoreOSLogo';
 
@@ -29,11 +29,8 @@ export default function CashierDashboardLayout() {
             {/* --- TOP NAVIGATION BAR --- */}
             <header className="h-14 bg-white border-b border-zinc-200 flex items-center justify-between px-4 sm:px-6 shrink-0 z-10 shadow-sm">
                 <div className="flex items-center gap-4">
-                    <StoreOSLogo className="w-6 h-6" />
-                    <div className="flex items-center gap-2 text-zinc-900 font-semibold tracking-tight">
-                        <LayoutGrid size={18} className="text-zinc-400" />
-                        <span>StoreOS Terminal</span>
-                    </div>
+                    <StoreOSLogo className="w-7 h-7" showText variant="light" />
+ 
  
                     <nav className="hidden md:flex items-center gap-1">
                         {navItems.map((item) => {

@@ -1,12 +1,21 @@
+import { useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Login from './pages/auth/Login';
 import CashierRoutes from './routes/CashierRoutes';
-import AdminRoutes from './routes/AdminRoutes'; // <-- ADD THIS IMPORT
+import AdminRoutes from './routes/AdminRoutes';
 import { useSelector } from 'react-redux';
+import LoadingScreen from './components/LoadingScreen';
 
 function App() {
+    const [appReady, setAppReady] = useState(false);
+
     // Read the logged-in user profile from our Redux auth slice dynamically
     const { user } = useSelector((state) => state.auth);
+
+    // Show premium loading screen on initial app load
+    if (!appReady) {
+        return <LoadingScreen onComplete={() => setAppReady(true)} />;
+    }
 
     return (
         <Routes>

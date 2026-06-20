@@ -2,7 +2,9 @@ import { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { loginUser } from '@/redux/features/auth/authThunk.js';
-import { Activity, ShieldCheck, Server, Lock, ArrowRight } from 'lucide-react';
+import { Activity, ShieldCheck, Lock, ArrowRight } from 'lucide-react';
+import AuthenticatingOverlay from '@/components/AuthenticatingOverlay';
+import { StoreOSLogo } from '@/components/StoreOSLogo';
 
 export default function Login() {
     const dispatch = useDispatch();
@@ -87,6 +89,9 @@ export default function Login() {
     return (
         <div className="min-h-screen bg-[#FAFAFA] text-[#09090B] relative overflow-hidden flex flex-col lg:flex-row font-sans">
 
+            {/* Authenticating Overlay — shown during credential verification */}
+            {loading && <AuthenticatingOverlay />}
+
             {/* --- GLOBAL BACKGROUND EFFECTS (Fixed DOM Position) --- */}
             <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-0">
                 <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-zinc-200/50 rounded-full blur-[100px]" />
@@ -97,8 +102,8 @@ export default function Login() {
             <aside className="hidden lg:flex lg:w-1/2 xl:w-7/12 px-12 xl:px-20 py-20 flex-col justify-center relative z-10 border-r border-zinc-200 bg-white/40 backdrop-blur-xl">
                 <div className="max-w-2xl">
                     <div className="flex items-start gap-5">
-                        <div className="w-12 h-12 rounded-lg bg-zinc-900 flex items-center justify-center text-white shadow-md">
-                            <Server size={22} strokeWidth={1.5} />
+                        <div className="w-12 h-12 rounded-lg flex items-center justify-center shadow-md">
+                            <StoreOSLogo className="w-12 h-12" />
                         </div>
                         <div>
                             <div className="text-xs font-semibold tracking-widest text-zinc-500 uppercase mb-1">Operations • Enterprise</div>
@@ -189,9 +194,7 @@ export default function Login() {
 
                 {/* Mobile Branding Fallback */}
                 <div className="lg:hidden flex flex-col items-center mb-8 text-center">
-                    <div className="w-10 h-10 rounded-lg bg-zinc-900 flex items-center justify-center text-white shadow-md mb-4">
-                        <Server size={20} strokeWidth={1.5} />
-                    </div>
+                    <StoreOSLogo className="w-10 h-10" />
                     <h1 className="text-xl font-semibold tracking-tight !text-zinc-900">Enterprise POS</h1>
                     <p className="text-xs text-zinc-500 mt-1">Authorized terminal access only.</p>
                 </div>

@@ -1,5 +1,5 @@
 import { Outlet, NavLink, useNavigate } from 'react-router-dom';
-import { LayoutDashboard, Boxes, Users, LogOut, Sparkles } from 'lucide-react';
+import { LayoutDashboard, Boxes, Users, LogOut } from 'lucide-react';
 import { StoreOSLogo } from '../components/StoreOSLogo';
 
 export default function AdminDashboardLayout() {
@@ -20,9 +20,8 @@ export default function AdminDashboardLayout() {
     <div className="min-h-screen flex bg-[#F4F4F5] text-zinc-900 font-sans selection:bg-[#D4A017] selection:text-white">
       {/* Premium Dark Sidebar */}
       <aside className="w-24 border-r border-[#1a1a1a] bg-[#09090b] flex flex-col items-center py-8 gap-8 shadow-[10px_0_30px_rgba(0,0,0,0.15)] z-20 transition-all duration-300">
-        <div className="mb-4 text-white hover:scale-110 transition-transform duration-300 cursor-pointer flex flex-col items-center gap-2">
-           <StoreOSLogo className="w-10 h-10 drop-shadow-[0_0_15px_rgba(212,160,23,0.4)]" />
-           <Sparkles size={14} className="text-[#D4A017] opacity-80" />
+        <div className="mb-4 flex flex-col items-center gap-2">
+           <StoreOSLogo className="w-10 h-10 drop-shadow-[0_0_15px_rgba(212,160,23,0.4)]" variant="dark" />
         </div>
 
         <nav className="flex flex-col gap-6 w-full px-4">
