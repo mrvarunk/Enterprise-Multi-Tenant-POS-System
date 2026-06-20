@@ -4,7 +4,7 @@ import os
 days = [0, 1, 2, 3, 4, 5, 6]
 payments = ["CASH", "CARD", "UPI"]
 
-with open("seed_50_orders.sql", "w") as f:
+with open("../database-seeds/seed_50_orders.sql", "w") as f:
     f.write("-- ========================================================\n")
     f.write("-- Generated SQL Script: Seeding 50 Realistic Mock Orders\n")
     f.write("-- Database: PostgreSQL\n")
