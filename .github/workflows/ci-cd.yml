@@ -48,15 +48,17 @@ jobs:
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
-        node-version: '22.x'
+        node-version: '22'
         cache: 'npm'
         cache-dependency-path: './pos-frontend/package-lock.json'
 
     - name: Install Dependencies
       run: npm ci
 
-    - name: Verify Node Version
-      run: node -v
+    - name: Check Node Version
+      run: |
+        node -v
+        npm -v
 
     - name: Build Vite App
       run: npm run build
