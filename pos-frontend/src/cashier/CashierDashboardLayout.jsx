@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { logout } from '../redux/features/auth/authSlice';
 import { LayoutDashboard, ShoppingCart, Clock, RotateCcw, Receipt, LogOut } from 'lucide-react';
 
-import { StoreOSLogo } from '../components/StoreOSLogo';
+import { CafeOpsLogo } from '../components/StoreOSLogo';
 
 export default function CashierDashboardLayout() {
     const location = useLocation();
@@ -29,7 +29,7 @@ export default function CashierDashboardLayout() {
             {/* --- TOP NAVIGATION BAR --- */}
             <header className="h-14 bg-white border-b border-zinc-200 flex items-center justify-between px-4 sm:px-6 shrink-0 z-10 shadow-sm">
                 <div className="flex items-center gap-4">
-                    <StoreOSLogo className="w-7 h-7" showText variant="light" />
+                    <CafeOpsLogo className="w-7 h-7" showText variant="light" />
  
  
                     <nav className="hidden md:flex items-center gap-1">

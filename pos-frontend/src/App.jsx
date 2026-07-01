@@ -5,6 +5,7 @@ import CashierRoutes from './routes/CashierRoutes';
 import AdminRoutes from './routes/AdminRoutes';
 import { useSelector } from 'react-redux';
 import LoadingScreen from './components/LoadingScreen';
+import POSView from './cafeops/BaristaPOSView';
 
 function App() {
     const [appReady, setAppReady] = useState(false);
@@ -19,6 +20,9 @@ function App() {
 
     return (
         <Routes>
+            {/* CafeOps Preview Route — no auth required */}
+            <Route path="/pos" element={<POSView />} />
+
             <Route path="/login" element={<Login />} />
 
             {/* Conditional Route Guard Routing Context Tree */}

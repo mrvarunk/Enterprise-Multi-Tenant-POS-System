@@ -1,6 +1,6 @@
 import { Outlet, NavLink, useNavigate } from 'react-router-dom';
 import { LayoutDashboard, Boxes, Users, LogOut } from 'lucide-react';
-import { StoreOSLogo } from '../components/StoreOSLogo';
+import { CafeOpsLogo } from '../components/StoreOSLogo';
 
 export default function AdminDashboardLayout() {
   const navigate = useNavigate();
@@ -21,7 +21,7 @@ export default function AdminDashboardLayout() {
       {/* Premium Dark Sidebar */}
       <aside className="w-24 border-r border-[#1a1a1a] bg-[#09090b] flex flex-col items-center py-8 gap-8 shadow-[10px_0_30px_rgba(0,0,0,0.15)] z-20 transition-all duration-300">
         <div className="mb-4 flex flex-col items-center gap-2">
-           <StoreOSLogo className="w-10 h-10 drop-shadow-[0_0_15px_rgba(212,160,23,0.4)]" variant="dark" />
+           <CafeOpsLogo className="w-10 h-10 drop-shadow-[0_0_15px_rgba(212,160,23,0.4)]" variant="dark" />
         </div>
 
         <nav className="flex flex-col gap-6 w-full px-4">
@@ -64,7 +64,7 @@ export default function AdminDashboardLayout() {
           <div className="flex items-center gap-5">
             <div className="flex flex-col">
               <div className="text-lg font-semibold tracking-tight text-zinc-900 flex items-center gap-2">
-                Store OS <span className="px-2 py-0.5 rounded-full bg-zinc-100 text-zinc-600 text-[10px] uppercase tracking-widest font-bold">Pro</span>
+                CafeOps <span className="px-2 py-0.5 rounded-full bg-zinc-100 text-zinc-600 text-[10px] uppercase tracking-widest font-bold">Pro</span>
               </div>
               <div className="text-sm text-zinc-500 font-medium">Operations Console</div>
             </div>

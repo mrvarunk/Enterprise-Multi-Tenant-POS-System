@@ -1,7 +1,6 @@
 -- ============================================================
 -- CafeOps — Cafe & Food Product Seed (PostgreSQL)
--- Replaces all retail products with cafe/food items
--- Run this against your local PostgreSQL database
+-- Automatically executed by Spring Boot @ application startup
 -- ============================================================
 
 -- 1. Clear dependent data first (order references products)
@@ -107,7 +106,7 @@ INSERT INTO orders (id, created_at, order_status, payment_type, total_amount, br
 (57, NOW() - INTERVAL '30 minutes', 'COMPLETED', 'CASH', 440, 1, 3, NULL),
 (58, NOW() - INTERVAL '15 minutes', 'COMPLETED', 'UPI',  380, 1, 3, NULL);
 
--- Order Items (referencing new product IDs)
+-- Order Items (referencing cafe product IDs)
 INSERT INTO order_item (id, price, quantity, order_id, product_id) VALUES
 (100, 380, 1, 50, 13),   -- Latte
 (101, 350, 1, 50, 43),   -- Chocolate Brownie
@@ -124,3 +123,4 @@ INSERT INTO order_item (id, price, quantity, order_id, product_id) VALUES
 (112, 440, 1, 57, 45),   -- Avocado Toast
 (113, 380, 1, 58, 44),   -- Cinnamon Roll
 (114, 250, 1, 58, 16);   -- Macchiato
+

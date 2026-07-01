@@ -58,19 +58,26 @@ export default function LoadingScreen({ onComplete }) {
                     viewBox="0 0 100 100"
                     className="w-14 h-14 rounded-xl shadow-lg"
                 >
-                    <rect width="100" height="100" fill="#09090B" rx="16" />
-                    <rect x="16" y="16" width="6" height="6" rx="2" fill="#F43F5E" opacity="0.8" />
-                    <rect x="26" y="16" width="6" height="6" rx="2" fill="#D4A017" opacity="0.8" />
-                    <rect x="36" y="16" width="6" height="6" rx="2" fill="#22C55E" opacity="0.8" />
-                    <text x="50" y="55" textAnchor="middle" fontFamily="Arial, Helvetica, sans-serif" fontWeight="800" fontSize="32" letterSpacing="-1" fill="#FAFAFA">Store</text>
-                    <text x="50" y="78" textAnchor="middle" fontFamily="Arial, Helvetica, sans-serif" fontWeight="900" fontSize="28" letterSpacing="6" fill="#F43F5E">OS</text>
+                    <defs>
+                        <linearGradient id="loadGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stopColor="#F59E0B" />
+                            <stop offset="100%" stopColor="#EA580C" />
+                        </linearGradient>
+                    </defs>
+                    <rect width="100" height="100" fill="#0C0A09" rx="18" />
+                    <rect x="28" y="42" width="34" height="28" rx="5" fill="url(#loadGrad)" />
+                    <path d="M62 50 Q76 50 76 58 Q76 66 62 66" stroke="url(#loadGrad)" strokeWidth="5" fill="none" strokeLinecap="round" />
+                    <path d="M36 36 Q39 30 36 24" stroke="#F59E0B" strokeWidth="3" fill="none" strokeLinecap="round" opacity="0.7" />
+                    <path d="M45 36 Q48 28 45 22" stroke="#F59E0B" strokeWidth="3" fill="none" strokeLinecap="round" opacity="0.85" />
+                    <path d="M54 36 Q57 30 54 24" stroke="#F59E0B" strokeWidth="3" fill="none" strokeLinecap="round" opacity="0.7" />
+                    <rect x="22" y="70" width="46" height="6" rx="3" fill="#F59E0B" opacity="0.5" />
                 </svg>
 
-                <h1 className="text-xl font-semibold tracking-tight !text-zinc-900 mt-3">
-                    Store<span className="text-rose-500">OS</span>
+                <h1 className="text-xl font-bold tracking-tight !text-zinc-900 mt-3">
+                    Cafe<span className="text-amber-500">Ops</span>
                 </h1>
                 <p className="text-xs text-zinc-400 mt-1 tracking-wide uppercase font-medium">
-                    Enterprise POS Terminal
+                    POS Platform
                 </p>
 
                 {/* Progress bar */}

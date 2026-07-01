@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { loginUser } from '@/redux/features/auth/authThunk.js';
 import { Activity, ShieldCheck, Lock, ArrowRight } from 'lucide-react';
 import AuthenticatingOverlay from '@/components/AuthenticatingOverlay';
-import { StoreOSLogo } from '@/components/StoreOSLogo';
+import { CafeOpsLogo } from '@/components/StoreOSLogo';
 
 export default function Login() {
     const dispatch = useDispatch();
@@ -103,7 +103,7 @@ export default function Login() {
                 <div className="max-w-2xl">
                     <div className="flex items-start gap-5">
                         <div className="w-12 h-12 rounded-lg flex items-center justify-center shadow-md">
-                            <StoreOSLogo className="w-12 h-12" />
+                            <CafeOpsLogo className="w-12 h-12" />
                         </div>
                         <div>
                             <div className="text-xs font-semibold tracking-widest text-zinc-500 uppercase mb-1">Operations • Enterprise</div>
@@ -194,7 +194,7 @@ export default function Login() {
 
                 {/* Mobile Branding Fallback */}
                 <div className="lg:hidden flex flex-col items-center mb-8 text-center">
-                    <StoreOSLogo className="w-10 h-10" />
+                    <CafeOpsLogo className="w-10 h-10" />
                     <h1 className="text-xl font-semibold tracking-tight !text-zinc-900">Enterprise POS</h1>
                     <p className="text-xs text-zinc-500 mt-1">Authorized terminal access only.</p>
                 </div>

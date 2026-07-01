@@ -149,7 +149,7 @@ export default function POSLayout({ children, activePage = 'Dashboard' }) {
                     <div className="relative w-[240px] bg-white h-full shadow-2xl flex flex-col">
                         {/* Re-use sidebar content here or abstract to a separate component in production */}
                         <div className="p-4 border-b border-zinc-200 flex justify-between items-center">
-                            <span className="font-semibold tracking-tight">StoreOS</span>
+                            <span className="font-semibold tracking-tight">CafeOps</span>
                             <button onClick={() => setIsMobileMenuOpen(false)} className="text-zinc-500"><LogOut size={18} /></button>
                         </div>
                         <nav className="flex-1 p-4 space-y-2">
